@@ -21,21 +21,21 @@ async def record_demo():
         await asyncio.sleep(2)
 
         print("2. Demo 1: Order Lookup (ORD-101)...")
-        await page.type("#input", "📦 Check status of express order ORD-101", delay=30)
+        await page.type("#userQuery", "📦 Check status of express order ORD-101", delay=30)
         await asyncio.sleep(1)
-        await page.click("button.send-btn")
+        await page.click("button[type='submit']")
         await asyncio.sleep(6)
 
         print("3. Demo 2: Fleet Analytics & Eco Footprint...")
-        await page.type("#input", "📊 Analyze courier fleet performance and eco carbon footprint for ORD-101", delay=30)
+        await page.type("#userQuery", "📊 Analyze courier fleet performance and eco carbon footprint for ORD-101", delay=30)
         await asyncio.sleep(1)
-        await page.click("button.send-btn")
+        await page.click("button[type='submit']")
         await asyncio.sleep(6)
 
         print("4. Demo 3: Live Route Map & Omni Model Video Generation...")
-        await page.type("#input", "🗺️ Show delivery route map for ORD-101 and generate a short promo video for Matcha Latte", delay=30)
+        await page.type("#userQuery", "🗺️ Show delivery route map for ORD-101 and generate a short promo video for Matcha Latte", delay=30)
         await asyncio.sleep(1)
-        await page.click("button.send-btn")
+        await page.click("button[type='submit']")
         
         # Wait for agent processing & Omni video generation
         await asyncio.sleep(15)
