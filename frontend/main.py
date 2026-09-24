@@ -1,4 +1,4 @@
-"""Minimal FastAPI proxy for NovaSmart AI Agent (Ultra-Fast Dual Engine: Local ADK + A2A Fallback).
+"""Minimal FastAPI proxy for NovaSmart AI Agent (A2A Agent Runtime + ADK Local execution).
 """
 
 import os
@@ -15,19 +15,6 @@ from fastapi.staticfiles import StaticFiles
 
 # Add parent directory to sys.path so app module is importable
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
-
-LOCAL_AGENT_AVAILABLE = False
-root_agent = None
-runner = None
-
-try:
-    from app.agent import root_agent
-    from google.adk.runners import Runner
-    runner = Runner(agent=root_agent, app_name="nova_smart_app")
-    LOCAL_AGENT_AVAILABLE = True
-    print("⚡ Ultra-Fast Local ADK Engine initialized successfully!")
-except Exception as e:
-    print(f"⚠️ Local ADK Engine init warning: {e}. Defaulting to remote A2A proxy.")
 
 RESOURCE = os.environ.get("AGENT_ENGINE_RESOURCE_NAME", "projects/970704427546/locations/us-east1/reasoningEngines/6276040958647730176")
 AGENT_DIRECTORY = os.environ.get("AGENT_DIRECTORY", "app")
@@ -69,25 +56,36 @@ async def _json_errors(request: Request, exc: Exception):
 _contexts: dict[str, str] = {}
 _card = None
 
-def _extract_parts_from_text(txt: str) -> list[dict]:
-    out = []
-    if "<a2ui-json>" in txt or "surfaceUpdate" in txt or "beginRendering" in txt:
-        try:
-            clean_txt = (
-                txt.replace("<a2ui-json>", "")
-                .replace("</a2ui-json>", "")
-                .replace("<a2a_datapart_json>", "")
-                .replace("</a2a_datapart_json>", "")
-                .strip()
-            )
-            if clean_txt.startswith("```"):
-                clean_txt = clean_txt.split("\n", 1)[-1].rsplit("```", 1)[0].strip()
-            a2ui_data = json.loads(clean_txt)
-            out.append({"kind": "a2ui", "data": a2ui_data})
-            return out
-        except Exception:
-            pass
-    out.append({"kind": "text", "text": txt})
+def _extract_parts(parts: list) -> list[dict]:
+    out: list[dict] = []
+    for p in parts:
+        root = getattr(p, "root", p)
+        txt = getattr(root, "text", None)
+        if txt:
+            if "<a2ui-json>" in txt or "surfaceUpdate" in txt or "beginRendering" in txt:
+                try:
+                    clean_txt = (
+                        txt.replace("<a2ui-json>", "")
+                        .replace("</a2ui-json>", "")
+                        .replace("<a2a_datapart_json>", "")
+                        .replace("</a2a_datapart_json>", "")
+                        .strip()
+                    )
+                    if clean_txt.startswith("```"):
+                        clean_txt = clean_txt.split("\n", 1)[-1].rsplit("```", 1)[0].strip()
+                    a2ui_data = json.loads(clean_txt)
+                    out.append({"kind": "a2ui", "data": a2ui_data})
+                    continue
+                except Exception:
+                    pass
+            out.append({"kind": "text", "text": txt})
+        elif getattr(root, "data", None) is not None:
+            meta = getattr(root, "metadata", None) or {}
+            mime = meta.get("mimeType") if isinstance(meta, dict) else None
+            if mime == _A2UI_MIME:
+                out.append({"kind": "a2ui", "data": root.data})
+            else:
+                out.append({"kind": "a2ui", "data": root.data})
     return out
 
 @app.post("/chat")
@@ -95,36 +93,13 @@ async def chat(req: Request):
     body = await req.json()
     message = body.get("message", "")
     user_id = body.get("user_id") or "web-user"
-    session_id = _contexts.get(user_id) or str(uuid.uuid4())
-    _contexts[user_id] = session_id
-
     parts: list[dict] = []
 
-    # Fast Path 1: Local ADK Runner Execution (< 1 sec latency)
-    if LOCAL_AGENT_AVAILABLE and runner is not None:
-        try:
-            # Set timeout of 25 seconds for fast local execution
-            events = []
-            async for event in runner.run_async(user_id=user_id, session_id=session_id, query=message):
-                events.append(event)
-            
-            for event in events:
-                if hasattr(event, "content") and event.content:
-                    for part in getattr(event.content, "parts", []):
-                        txt = getattr(part, "text", None)
-                        if txt:
-                            parts.extend(_extract_parts_from_text(txt))
-            if parts:
-                return JSONResponse({"parts": parts})
-        except Exception as err:
-            print(f"Local runner execution fallback due to: {err}")
-
-    # Fallback Path 2: Remote A2A Agent Runtime HTTP Client
     try:
         from a2a.client import ClientConfig, ClientFactory
         from a2a.types import AgentCard, Message, Part, Role, TaskArtifactUpdateEvent, TextPart, TransportProtocol
 
-        async with httpx.AsyncClient(headers=_auth_headers(), timeout=45) as client:
+        async with httpx.AsyncClient(headers=_auth_headers(), timeout=120) as client:
             resp = await client.get(A2A_CARD_URL)
             card = AgentCard(**resp.json())
             card.url = A2A_BASE
@@ -141,23 +116,34 @@ async def chat(req: Request):
                 message_id=str(uuid.uuid4()),
                 role=Role.user,
                 parts=[Part(root=TextPart(text=message))],
-                context_id=session_id,
+                context_id=_contexts.get(user_id),
             )
 
+            last_task = None
+            got_artifact_update = False
             async for event in a2a_client.send_message(msg):
-                if isinstance(event, tuple):
-                    task, update = event
-                    if isinstance(update, TaskArtifactUpdateEvent):
-                        for p in update.artifact.parts:
-                            root = getattr(p, "root", p)
-                            txt = getattr(root, "text", None)
-                            if txt:
-                                parts.extend(_extract_parts_from_text(txt))
+                if not isinstance(event, tuple):
+                    continue
+                task, update = event
+                if task is not None:
+                    last_task = task
+                    if getattr(task, "context_id", None):
+                        _contexts[user_id] = task.context_id
+                if isinstance(update, TaskArtifactUpdateEvent):
+                    got_artifact_update = True
+                    parts.extend(_extract_parts(update.artifact.parts))
+
+            # Non-streaming fallback: pull parts from the final task's artifacts.
+            if not got_artifact_update and last_task is not None:
+                for artifact in getattr(last_task, "artifacts", None) or []:
+                    parts.extend(_extract_parts(artifact.parts))
+
     except Exception as err:
-        print(f"A2A Remote client fallback error: {err}")
+        print(f"A2A execution error: {err}")
+        return JSONResponse({"parts": [{"kind": "text", "text": f"Error connecting to agent: {err}"}]})
 
     if not parts:
-        parts = [{"kind": "text", "text": "⚡ NovaSmart AI Agent processed request."}]
+        parts = [{"kind": "text", "text": "(The agent didn't return a reply.)"}]
 
     return JSONResponse({"parts": parts})
 
