@@ -449,20 +449,55 @@
   <div class="brand">
     <span class="material-symbols-outlined brand-icon">local_shipping</span>
     <div class="brand-text">
-      <h1>VelocityTrack</h1>
-      <p>Autonomous Fleet & Express Order Dispatcher</p>
+      <h1>NovaSmart Fleet Ops</h1>
+      <p>Autonomous Dark-Store Dispatcher & AI Agent Portal</p>
     </div>
   </div>
   <div class="header-actions">
     <div class="status-badge">
       <div class="status-dot"></div>
-      <span>AI Dispatcher Active</span>
+      <span>Agent Active</span>
     </div>
     <button class="theme-toggle-btn" id="themeToggle" title="Toggle Dark/Light Mode">
       <span class="material-symbols-outlined" id="themeIcon" style="color: #fff;">dark_mode</span>
     </button>
   </div>
 </header>
+
+<!-- Enterprise Operations Dashboard Bar -->
+<div style="max-width: 1000px; margin: 0.75rem auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem; padding: 0 1.5rem;">
+  <div style="background: var(--surface); border: 1px solid var(--border); padding: 0.85rem 1rem; border-radius: 14px; box-shadow: var(--shadow-sm); display: flex; align-items: center; gap: 0.75rem;">
+    <div style="background: var(--accent-light); color: var(--accent); padding: 0.6rem; border-radius: 10px; display: flex;"><span class="material-symbols-outlined">inventory_2</span></div>
+    <div>
+      <div style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 500;">Active Orders</div>
+      <div style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary);">100+ Express</div>
+    </div>
+  </div>
+
+  <div style="background: var(--surface); border: 1px solid var(--border); padding: 0.85rem 1rem; border-radius: 14px; box-shadow: var(--shadow-sm); display: flex; align-items: center; gap: 0.75rem;">
+    <div style="background: var(--accent-light); color: var(--accent); padding: 0.6rem; border-radius: 10px; display: flex;"><span class="material-symbols-outlined">two_wheeler</span></div>
+    <div>
+      <div style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 500;">Rider Telemetry</div>
+      <div style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary);">12 Active Couriers</div>
+    </div>
+  </div>
+
+  <div style="background: var(--surface); border: 1px solid var(--border); padding: 0.85rem 1rem; border-radius: 14px; box-shadow: var(--shadow-sm); display: flex; align-items: center; gap: 0.75rem;">
+    <div style="background: var(--accent-light); color: var(--accent); padding: 0.6rem; border-radius: 10px; display: flex;"><span class="material-symbols-outlined">store</span></div>
+    <div>
+      <div style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 500;">Dark-Store Hub</div>
+      <div style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary);">Downtown #1</div>
+    </div>
+  </div>
+
+  <div style="background: var(--surface); border: 1px solid var(--border); padding: 0.85rem 1rem; border-radius: 14px; box-shadow: var(--shadow-sm); display: flex; align-items: center; gap: 0.75rem;">
+    <div style="background: var(--accent-light); color: var(--accent); padding: 0.6rem; border-radius: 10px; display: flex;"><span class="material-symbols-outlined">cloud</span></div>
+    <div>
+      <div style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 500;">Weather Radar</div>
+      <div style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary);">NWS Monitored</div>
+    </div>
+  </div>
+</div>
 
 <div class="chat-container">
   <div id="log"></div>
