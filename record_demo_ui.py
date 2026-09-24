@@ -16,31 +16,31 @@ async def record_demo():
         )
         page = await context.new_page()
 
-        print("1. Opening NovaSmart Fleet Delivery Ops UI...")
+        print("1. Opening NovaSmart Fleet Delivery Portal...")
         await page.goto(FRONTEND_URL, wait_until="networkidle")
-        await asyncio.sleep(3)
+        await asyncio.sleep(2)
 
         print("2. Demo 1: Order Lookup (ORD-101)...")
-        await page.type("#input", "📦 Check status of express order ORD-101", delay=40)
+        await page.type("#input", "📦 Check status of express order ORD-101", delay=30)
         await asyncio.sleep(1)
         await page.click("button.send-btn")
-        await asyncio.sleep(7)
+        await asyncio.sleep(6)
 
-        print("3. Demo 2: Interactive Card Action Button (Route Weather)...")
-        weather_btn = page.locator("button:has-text('Route Weather')").last
-        if await weather_btn.count() > 0:
-            await weather_btn.click()
-            await asyncio.sleep(7)
+        print("3. Demo 2: Fleet Analytics & Eco Footprint...")
+        await page.type("#input", "📊 Analyze courier fleet performance and eco carbon footprint for ORD-101", delay=30)
+        await asyncio.sleep(1)
+        await page.click("button.send-btn")
+        await asyncio.sleep(6)
 
         print("4. Demo 3: Live Route Map & Omni Model Video Generation...")
-        await page.type("#input", "🗺️ Show delivery route map for ORD-101 and generate a short promo video for Matcha Latte", delay=35)
+        await page.type("#input", "🗺️ Show delivery route map for ORD-101 and generate a short promo video for Matcha Latte", delay=30)
         await asyncio.sleep(1)
         await page.click("button.send-btn")
         
         # Wait for agent processing & Omni video generation
-        await asyncio.sleep(14)
+        await asyncio.sleep(15)
 
-        print("5. Smooth scroll to highlight route map and video player...")
+        print("5. Smooth scrolling to highlight maps, analytics cards, and MP4 video player...")
         await page.evaluate("window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'})")
         await asyncio.sleep(6)
 

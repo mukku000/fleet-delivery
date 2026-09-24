@@ -13,14 +13,13 @@ VOICEOVER_WAV = "/tmp/voiceover.mp3"
 LOFI_WAV = "/tmp/lofi_music.wav"
 
 VOICEOVER_TEXT = (
-    "Welcome to NovaSmart Fleet Delivery Ops, an intelligent enterprise agent built for high-velocity dark-store delivery, "
-    "rider routing, and package tracking. "
-    "First, we check express order ORD-101. The agent queries Firestore and renders a rich A2UI card with order status, "
-    "courier details, and interactive action buttons. "
-    "Next, we click Route Weather. The agent fetches real-time route weather and safety alerts from the National Weather Service API. "
-    "Finally, we request a live route map and an item promo video. Using Google Maps Static API and Google's Omni model gemini-omni-flash-preview, "
-    "the agent generates a visual route map and an AI promo video uploaded to public Cloud Storage. "
-    "Experience the future of intelligent fleet management with NovaSmart AI!"
+    "Welcome to NovaSmart Fleet Ops, Google's next-generation autonomous AI fleet dispatcher and dark-store logistics engine. "
+    "Unlike legacy delivery platforms that only show static map dots, NovaSmart is powered by Vertex AI Agent Engine. "
+    "First, we query express order ORD-101. The agent renders a live A2UI card with courier telemetry, dark-store hub status, and route advisories. "
+    "Next, we run AI Fleet Analytics and Carbon Footprint calculations, evaluating rider safety scores and zero-emission CO2 savings in real time. "
+    "Finally, we request a static route map and an item promo video. Built with Google Maps Platform and Google's Omni model gemini-omni-flash-preview, "
+    "NovaSmart generates interactive maps and 3D item promo videos streamed directly from Cloud Storage. "
+    "Experience hyper-local delivery re-imagined with Google AI!"
 )
 
 async def generate_voiceover():
