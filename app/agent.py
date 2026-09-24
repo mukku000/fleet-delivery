@@ -21,8 +21,9 @@ from app.tools.firestore_tools import (
     search_orders_by_status,
     update_order_status,
     optimize_batch_dispatch,
+    check_darkstore_inventory,
 )
-from app.tools.courier_tools import check_courier_telemetry
+from app.tools.courier_tools import check_courier_telemetry, analyze_courier_fleet, estimate_delivery_footprint
 from app.tools.weather_tools import get_route_weather
 from app.tools.maps_tools import geocode_address, find_nearby_places, generate_route_map
 from app.tools.image_tools import generate_item_image
@@ -135,7 +136,10 @@ root_agent = Agent(
         search_orders_by_status,
         update_order_status,
         optimize_batch_dispatch,
+        check_darkstore_inventory,
         check_courier_telemetry,
+        analyze_courier_fleet,
+        estimate_delivery_footprint,
         get_route_weather,
         geocode_address,
         find_nearby_places,

@@ -5,5 +5,8 @@ __pycache__/
 *.egg-info/
 .env
 
-# Temporary test scripts
+# Temporary test scripts & heavy recordings
 test_omni*
+demo_recordings/
+demo_agent.mp4
+*.webm

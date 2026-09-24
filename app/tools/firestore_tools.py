@@ -94,3 +94,23 @@ def optimize_batch_dispatch(hub_name: str = "Downtown Express Hub #1") -> dict:
         "status": "Success",
         "assignments": assignments
     }
+
+def check_darkstore_inventory(hub_name: str = "Downtown Express Hub #1") -> dict:
+    """Check current inventory levels for popular dark-store express items, flagging low-stock items requiring replenishment."""
+    items = [
+        {"sku": "SKU-1001", "name": "Matcha Latte", "stock_qty": 48, "reorder_level": 15, "status": "In Stock"},
+        {"sku": "SKU-1002", "name": "Avocado Bowl", "stock_qty": 8, "reorder_level": 10, "status": "LOW STOCK"},
+        {"sku": "SKU-1003", "name": "Organic Cold Brew Coffee", "stock_qty": 62, "reorder_level": 20, "status": "In Stock"},
+        {"sku": "SKU-1004", "name": "Artisan Sourdough Toast", "stock_qty": 4, "reorder_level": 8, "status": "LOW STOCK"},
+        {"sku": "SKU-1005", "name": "Fresh Berry Parfait", "stock_qty": 35, "reorder_level": 12, "status": "In Stock"}
+    ]
+    
+    low_stock = [item["name"] for item in items if item["stock_qty"] <= item["reorder_level"]]
+    
+    return {
+        "fulfillment_hub": hub_name,
+        "total_sku_monitored": len(items),
+        "low_stock_alerts": low_stock,
+        "inventory_snapshot": items,
+        "recommended_reorder": "Trigger auto-replenishment for Avocado Bowl & Artisan Sourdough Toast."
+    }

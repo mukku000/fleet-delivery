@@ -1,0 +1,8 @@
+demo.gif
+demo_agent.mp4
+demo_recordings/
+.venv/
+__pycache__/
+*.pyc
+.git/
+tests/

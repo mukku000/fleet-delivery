@@ -17,30 +17,39 @@ NovaSmart Fleet Delivery Ops is an enterprise-grade AI agent designed for high-v
 - **Courier Telemetry**: Queries real-time rider status, battery level, speed, and active order counts from the `couriers` collection.
 - **Batch Dispatch Optimization**: Automatically pairs pending orders with available couriers at dark-store fulfillment hubs.
 
-### 🌧️ 2. Real-Time Route Weather Monitoring (National Weather Service API)
+### 📊 2. AI Courier Fleet Analytics & Safety
+- **Fleet Analytics & Battery Safety**: Evaluates real-time battery charge levels across active riders (`analyze_courier_fleet`), flagging low-battery couriers (<50%) and generating battery swap alerts.
+
+### 🌱 3. Carbon Footprint & Eco-Routing Estimator
+- **CO2 Emissions & Green Savings**: Calculates estimated transit duration, carbon emissions (grams CO2e), and CO2 saved (`estimate_delivery_footprint`) compared to standard internal combustion delivery vans.
+
+### 🏪 4. Dark-Store Inventory & Replenishment
+- **Inventory Monitoring & Auto-Reorder**: Checks stock levels across dark-store items (`check_darkstore_inventory`) at fulfillment hubs, automatically raising reorder alerts for low-stock SKUs.
+
+### 🌧️ 5. Real-Time Route Weather Monitoring (National Weather Service API)
 - **Route Weather & Safety Advisories**: Queries the National Weather Service (`api.weather.gov`) REST API to fetch live weather conditions, precipitation alerts, and rider safety advisories along active delivery corridors.
 
-### 🗺️ 3. Location Intelligence (Google Maps Platform APIs)
+### 🗺️ 6. Location Intelligence (Google Maps Platform APIs)
 - **Geocoding API**: Converts street addresses into geographic coordinates (`latitude`, `longitude`).
 - **Places API (New)**: Searches nearby places (e.g., fuel stations, maintenance hubs, dark stores) using spatial proximity queries.
 - **Static Maps API**: Generates visual route maps showing hub locations and delivery drop-off markers.
 
-### 🧠 4. Persistent Memory (Vertex AI Memory Bank)
+### 🧠 7. Persistent Memory (Vertex AI Memory Bank)
 - **Cross-Session Fact Persistence**: Integrates Vertex AI Memory Bank (`PreloadMemoryTool` and callback hooks) to remember user preferences, frequent fulfillment hubs, and dispatcher notes across sessions.
 
-### 📸 5. AI Package Preview Generation (Vertex AI Imagen 3)
+### 📸 8. AI Package Preview Generation (Vertex AI Imagen 3)
 - **Proof of Delivery / Item Previews**: Uses Imagen 3 (`imagen-3.0-generate-002`) to generate photorealistic package content preview images.
 - **Cloud Storage Integration**: Uploads raw binary image assets directly to Google Cloud Storage (`velocity-track-media-9707`) and returns public HTTPS URLs.
 
-### 🎥 6. 3D Item Promo Video Generation (Google Omni Model)
+### 🎥 9. 3D Item Promo Video Generation (Google Omni Model)
 - **Generative Item Videos**: Calls Google's Omni Model (`gemini-omni-flash-preview` / `veo-3.1-lite-generate-001`) in the `global` region to produce short item promo videos.
 - **Playground Artifacts & GCS Upload**: Saves video artifacts via ADK `ToolContext.save_artifact` for the Playground panel and uploads public MP4 files to Cloud Storage.
 
-### 🎨 7. Rich Interactive UI (A2UI Protocol)
+### 🎨 10. Rich Interactive UI (A2UI Protocol)
 - **Native Card Components**: Emits structured A2UI surface components (`Card`, `Column`, `Row`, `Text`, `Image`, `Video`, `Button`).
 - **HTML5 Media Player**: Custom web frontend natively renders static route maps and plays HTML5 MP4 videos directly inside the chat interface.
 
-### 💻 8. Code Sandbox Execution
+### 💻 11. Code Sandbox Execution
 - **Dynamic Python Sandbox**: Runs `AgentEngineSandboxCodeExecutor` for complex routing algorithms, distance matrix calculations, and analytics math.
 
 ---
