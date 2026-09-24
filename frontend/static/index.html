@@ -3,48 +3,47 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VelocityTrack - Fleet Delivery Tracker & AI Dispatcher</title>
+<title>NovaSmart Fleet Ops - Google-Grade AI Dispatcher & Dark-Store Command Portal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
 <style>
   :root {
-    --bg-main: #f8fafc;
-    --surface: #ffffff;
-    --surface-hover: #f1f5f9;
-    --border: #e2e8f0;
-    --text-primary: #0f172a;
-    --text-secondary: #64748b;
-    --accent: #4f46e5;
-    --accent-dark: #4338ca;
-    --accent-light: #e0e7ff;
-    --accent-gradient: linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%);
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
-  }
-
-  body.dark-theme {
-    --bg-main: #0b0f19;
-    --surface: #1e293b;
-    --surface-hover: #334155;
-    --border: #334155;
+    --bg-main: #090d16;
+    --surface: #131b2e;
+    --surface-hover: #1c2744;
+    --border: #233152;
     --text-primary: #f8fafc;
     --text-secondary: #94a3b8;
     --accent: #6366f1;
-    --accent-dark: #4f46e5;
-    --accent-light: #1e1b4b;
-    --accent-gradient: linear-gradient(135deg, #6366f1 0%, #22d3ee 100%);
-    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.5);
-    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
-    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+    --accent-glow: rgba(99, 102, 241, 0.4);
+    --cyan-glow: rgba(34, 211, 238, 0.4);
+    --accent-gradient: linear-gradient(135deg, #6366f1 0%, #22d3ee 50%, #a855f7 100%);
+    --card-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 8px 10px -6px rgba(0, 0, 0, 0.5);
+    --success: #10b981;
+    --warning: #f59e0b;
+    --danger: #ef4444;
+  }
+
+  body.light-theme {
+    --bg-main: #f1f5f9;
+    --surface: #ffffff;
+    --surface-hover: #f8fafc;
+    --border: #cbd5e1;
+    --text-primary: #0f172a;
+    --text-secondary: #64748b;
+    --accent: #4f46e5;
+    --accent-glow: rgba(79, 70, 229, 0.2);
+    --cyan-glow: rgba(6, 182, 212, 0.2);
+    --accent-gradient: linear-gradient(135deg, #4f46e5 0%, #06b6d4 100%);
+    --card-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.08);
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
 
   body {
-    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
     background: var(--bg-main);
     color: var(--text-primary);
     display: flex;
@@ -54,42 +53,73 @@
     transition: background 0.3s ease, color 0.3s ease;
   }
 
-  header {
-    background: var(--accent-gradient);
-    color: #ffffff;
-    padding: 1rem 1.75rem;
+  /* Emergency Incident Marquee Ticker */
+  .ticker-bar {
+    background: #0f172a;
+    border-bottom: 1px solid var(--border);
+    color: #38bdf8;
+    font-size: 0.76rem;
+    font-weight: 600;
+    padding: 0.35rem 1rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    box-shadow: var(--shadow-md);
-    z-index: 10;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .ticker-content {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    animation: marquee 30s linear infinite;
+  }
+
+  @keyframes marquee {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+  }
+
+  /* Command Center Header */
+  header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0.85rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: var(--card-shadow);
+    z-index: 20;
   }
 
   .brand {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.85rem;
   }
 
   .brand-icon {
-    font-size: 1.8rem;
-    background: rgba(255, 255, 255, 0.2);
-    padding: 0.4rem;
-    border-radius: 12px;
-    backdrop-filter: blur(4px);
+    font-size: 2rem;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 0 12px var(--accent-glow));
   }
 
   .brand-text h1 {
-    font-size: 1.25rem;
-    font-weight: 700;
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.35rem;
+    font-weight: 800;
     letter-spacing: -0.02em;
-    line-height: 1.2;
+    background: var(--accent-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 
   .brand-text p {
-    font-size: 0.8rem;
-    opacity: 0.9;
-    font-weight: 400;
+    font-size: 0.78rem;
+    color: var(--text-secondary);
+    font-weight: 500;
   }
 
   .header-actions {
@@ -98,80 +128,169 @@
     gap: 1rem;
   }
 
+  .hub-selector {
+    background: var(--bg-main);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    padding: 0.4rem 0.85rem;
+    border-radius: 10px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    outline: none;
+    cursor: pointer;
+  }
+
   .status-badge {
     display: flex;
     align-items: center;
-    gap: 0.4rem;
-    background: rgba(255, 255, 255, 0.2);
-    padding: 0.3rem 0.75rem;
+    gap: 0.5rem;
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+    color: #34d399;
+    padding: 0.35rem 0.85rem;
     border-radius: 20px;
     font-size: 0.78rem;
-    font-weight: 500;
-    backdrop-filter: blur(4px);
+    font-weight: 600;
   }
 
   .status-dot {
     width: 8px;
     height: 8px;
-    background: #22c55e;
+    background: #10b981;
     border-radius: 50%;
-    box-shadow: 0 0 8px #22c55e;
+    box-shadow: 0 0 10px #10b981;
     animation: pulse 2s infinite;
   }
 
   @keyframes pulse {
-    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
-    70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
-    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+    0% { transform: scale(0.95); opacity: 0.8; }
+    50% { transform: scale(1.15); opacity: 1; }
+    100% { transform: scale(0.95); opacity: 0.8; }
   }
 
-  .theme-toggle-btn {
-    background: rgba(255, 255, 255, 0.18);
-    border: none;
-    color: #ffffff;
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
+  /* Operations Dashboard HUD Bar */
+  .hud-bar {
+    max-width: 1280px;
+    margin: 0.75rem auto 0;
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 0.75rem;
+    padding: 0 1.25rem;
+  }
+
+  .hud-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 0.75rem 1rem;
+    border-radius: 14px;
+    box-shadow: var(--card-shadow);
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 0.75rem;
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+
+  .hud-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent);
+  }
+
+  .hud-icon {
+    background: rgba(99, 102, 241, 0.15);
+    color: var(--accent);
+    padding: 0.55rem;
+    border-radius: 10px;
+    display: flex;
+  }
+
+  .hud-title {
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .hud-value {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--text-primary);
+  }
+
+  /* Navigation Tabs */
+  .nav-tabs {
+    max-width: 1280px;
+    width: 100%;
+    margin: 0.75rem auto 0;
+    padding: 0 1.25rem;
+    display: flex;
+    gap: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .tab-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+    padding: 0.6rem 1.1rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    border-bottom: 3px solid transparent;
     cursor: pointer;
-    transition: background 0.2s ease, transform 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    transition: all 0.2s ease;
   }
 
-  .theme-toggle-btn:hover {
-    background: rgba(255, 255, 255, 0.3);
-    transform: scale(1.05);
+  .tab-btn:hover, .tab-btn.active {
+    color: var(--text-primary);
+    border-bottom-color: var(--accent);
   }
 
+  /* Main Workspace Area */
+  .workspace {
+    flex: 1;
+    max-width: 1280px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 1rem 1.25rem;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .tab-content { display: none; height: 100%; flex-direction: column; gap: 1rem; }
+  .tab-content.active { display: flex; }
+
+  /* Chat Container */
   .chat-container {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--card-shadow);
     flex: 1;
     display: flex;
     flex-direction: column;
-    max-width: 960px;
-    width: 100%;
-    margin: 0 auto;
-    height: calc(100vh - 65px);
+    overflow: hidden;
+    min-height: 480px;
   }
 
   #log {
     flex: 1;
+    padding: 1.25rem;
     overflow-y: auto;
-    padding: 1.5rem;
     display: flex;
     flex-direction: column;
-    gap: 1.25rem;
-    scroll-behavior: smooth;
+    gap: 1rem;
   }
 
-  #log::-webkit-scrollbar { width: 6px; }
-  #log::-webkit-scrollbar-track { background: transparent; }
-  #log::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
-
-  .msg {
+  .message {
     display: flex;
     flex-direction: column;
-    max-width: 88%;
+    max-width: 82%;
     animation: fadeIn 0.25s ease-out;
   }
 
@@ -180,119 +299,45 @@
     to { opacity: 1; transform: translateY(0); }
   }
 
-  .msg.user { align-self: flex-end; }
-  .msg.agent { align-self: flex-start; }
-
-  .sender-header {
-    font-size: 0.75rem;
-    font-weight: 600;
-    margin-bottom: 0.3rem;
-    color: var(--text-secondary);
-    padding-left: 0.2rem;
-  }
-
-  .msg.user .sender-header { text-align: right; padding-right: 0.2rem; }
+  .message.user { align-self: flex-end; }
+  .message.assistant { align-self: flex-start; }
 
   .bubble {
-    padding: 0.95rem 1.25rem;
-    border-radius: 18px;
-    font-size: 0.95rem;
-    line-height: 1.5;
-    box-shadow: var(--shadow-sm);
-    word-break: break-word;
-    position: relative;
+    padding: 0.85rem 1.1rem;
+    border-radius: 16px;
+    font-size: 0.92rem;
+    line-height: 1.55;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
   }
 
-  .msg.user .bubble {
-    background: var(--accent);
+  .user .bubble {
+    background: var(--accent-gradient);
     color: #ffffff;
     border-bottom-right-radius: 4px;
+    font-weight: 500;
   }
 
-  .msg.agent .bubble {
-    background: var(--surface);
+  .assistant .bubble {
+    background: var(--bg-main);
     color: var(--text-primary);
     border: 1px solid var(--border);
     border-bottom-left-radius: 4px;
   }
 
-  .msg.agent .bubble.rich {
-    padding: 1rem;
-    width: 100%;
-    background: var(--surface);
-  }
-
-  .msg-footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 0.7rem;
-    color: var(--text-secondary);
-    margin-top: 0.35rem;
-    padding: 0 0.3rem;
-    gap: 0.5rem;
-  }
-
-  .copy-btn {
-    background: transparent;
-    border: none;
-    color: var(--text-secondary);
-    font-size: 0.7rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 0.2rem;
-    padding: 0.1rem 0.3rem;
-    border-radius: 4px;
-    transition: background 0.2s;
-  }
-
-  .copy-btn:hover { background: var(--surface-hover); color: var(--accent); }
-
-  /* Typing Indicator */
-  .typing-indicator {
-    display: flex;
-    align-items: center;
-    gap: 0.35rem;
-    padding: 0.85rem 1.1rem;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    border-bottom-left-radius: 4px;
-    width: fit-content;
-  }
-
-  .typing-dot {
-    width: 7px;
-    height: 7px;
-    background: var(--accent);
-    border-radius: 50%;
-    animation: typingBounce 1.4s infinite ease-in-out both;
-  }
-
-  .typing-dot:nth-child(1) { animation-delay: -0.32s; }
-  .typing-dot:nth-child(2) { animation-delay: -0.16s; }
-
-  @keyframes typingBounce {
-    0%, 80%, 100% { transform: scale(0); opacity: 0.4; }
-    40% { transform: scale(1); opacity: 1; }
-  }
-
-  /* Prompt Pills */
+  /* Quick Action Prompt Pills */
   .prompts-container {
-    padding: 0.75rem 1.5rem 0.25rem 1.5rem;
+    padding: 0.75rem 1.25rem;
+    background: var(--bg-main);
+    border-top: 1px solid var(--border);
   }
 
   .filter-tabs {
     display: flex;
     gap: 0.5rem;
     overflow-x: auto;
-    padding-bottom: 0.5rem;
-    scroll-behavior: smooth;
+    padding-bottom: 0.25rem;
+    scrollbar-width: none;
   }
-
-  .filter-tabs::-webkit-scrollbar { height: 4px; }
-  .filter-tabs::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 2px; }
 
   .prompt-btn {
     background: var(--surface);
@@ -300,526 +345,580 @@
     color: var(--text-primary);
     padding: 0.45rem 0.85rem;
     border-radius: 20px;
-    font-size: 0.82rem;
-    font-weight: 500;
-    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 600;
     white-space: nowrap;
+    cursor: pointer;
     transition: all 0.2s ease;
-    box-shadow: var(--shadow-sm);
-    display: flex;
-    align-items: center;
-    gap: 0.3rem;
   }
 
   .prompt-btn:hover {
-    background: var(--accent-light);
-    border-color: var(--accent);
-    color: var(--accent-dark);
-    transform: translateY(-1px);
-  }
-
-  /* Form & Input */
-  form {
-    display: flex;
-    gap: 0.75rem;
-    padding: 1rem 1.5rem 1.5rem 1.5rem;
-    background: var(--bg-main);
-  }
-
-  input {
-    flex: 1;
-    padding: 0.85rem 1.2rem;
-    border: 1.5px solid var(--border);
-    border-radius: 14px;
-    font-size: 0.95rem;
-    font-family: inherit;
-    outline: none;
-    transition: border-color 0.2s ease, background 0.2s ease;
-    background: var(--surface-hover);
-    color: var(--text-primary);
-  }
-
-  input:focus {
-    border-color: var(--accent);
-    background: var(--surface);
-    box-shadow: 0 0 0 3px var(--accent-light);
-  }
-
-  button.send-btn {
-    padding: 0.85rem 1.4rem;
-    border: none;
-    border-radius: 14px;
-    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
-    color: #ffffff;
-    font-weight: 600;
-    font-family: inherit;
-    font-size: 0.95rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    box-shadow: var(--shadow-md);
-  }
-
-  button.send-btn:hover {
-    opacity: 0.95;
-    transform: translateY(-1px);
-    box-shadow: var(--shadow-lg);
-  }
-
-  /* A2UI Component Styles */
-  .a2card {
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 1.25rem;
-    background: var(--surface);
-    box-shadow: var(--shadow-md);
-    max-width: 100%;
-  }
-
-  .a2card + .a2card, .a2col > .a2card { margin-top: 0.75rem; }
-  .a2col { display: flex; flex-direction: column; gap: 0.5rem; }
-  .a2row { display: flex; flex-direction: row; gap: 0.75rem; align-items: center; flex-wrap: wrap; }
-  .a2row.between { justify-content: space-between; }
-  .a2text { margin: 0; line-height: 1.45; }
-  .a2text.a2-h1 { font-size: 1.35rem; font-weight: 700; color: var(--text-primary); }
-  .a2text.a2-h2 { font-size: 1.15rem; font-weight: 700; color: var(--text-primary); }
-  .a2text.a2-h3 { font-size: 1.05rem; font-weight: 600; color: var(--text-primary); }
-  .a2text.a2-h4 { font-size: 0.95rem; font-weight: 600; color: var(--accent); }
-  .a2text.a2-caption { font-size: 0.75rem; color: var(--text-secondary); }
-  .a2divider { border: none; border-top: 1px solid var(--border); margin: 0.6rem 0; }
-  .a2img {
-    max-width: 100%;
-    border-radius: 12px;
-    margin-top: 0.5rem;
-    cursor: pointer;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-  .a2img:hover { transform: scale(1.02); box-shadow: var(--shadow-lg); }
-
-  /* Interactive Card Actions */
-  .card-actions {
-    display: flex;
-    gap: 0.4rem;
-    margin-top: 0.85rem;
-    flex-wrap: wrap;
-  }
-
-  .action-pill {
-    background: var(--surface-hover);
-    border: 1px solid var(--border);
-    color: var(--accent);
-    padding: 0.3rem 0.65rem;
-    border-radius: 14px;
-    font-size: 0.78rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-  }
-
-  .action-pill:hover {
     background: var(--accent);
     color: #ffffff;
     border-color: var(--accent);
+    box-shadow: 0 0 12px var(--accent-glow);
   }
+
+  /* Input Bar */
+  #form {
+    display: flex;
+    padding: 0.85rem 1.25rem;
+    gap: 0.75rem;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+  }
+
+  #input {
+    flex: 1;
+    background: var(--bg-main);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    padding: 0.75rem 1rem;
+    border-radius: 12px;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.2s ease;
+  }
+
+  #input:focus { border-color: var(--accent); }
+
+  .send-btn {
+    background: var(--accent-gradient);
+    color: #ffffff;
+    border: none;
+    padding: 0.75rem 1.25rem;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.88rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  /* Orders Grid Table */
+  .table-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 1.25rem;
+    box-shadow: var(--card-shadow);
+  }
+
+  .table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+
+  .search-input {
+    background: var(--bg-main);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    padding: 0.5rem 0.85rem;
+    border-radius: 10px;
+    font-size: 0.82rem;
+    outline: none;
+    width: 280px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+  }
+
+  th, td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+  }
+
+  th {
+    color: var(--text-secondary);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.72rem;
+  }
+
+  .status-pill {
+    padding: 0.25rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+
+  .status-pending { background: rgba(245, 158, 11, 0.15); color: #fbbf24; }
+  .status-intransit { background: rgba(59, 130, 246, 0.15); color: #60a5fa; }
+  .status-delivered { background: rgba(16, 185, 129, 0.15); color: #34d399; }
+
+  .action-chip {
+    background: var(--bg-main);
+    border: 1px solid var(--border);
+    color: var(--text-primary);
+    padding: 0.25rem 0.55rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  .action-chip:hover { background: var(--accent); color: white; }
 
   /* Lightbox Modal */
   .lightbox-modal {
     display: none;
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.8);
-    backdrop-filter: blur(8px);
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(10px);
     z-index: 100;
     align-items: center;
     justify-content: center;
   }
   .lightbox-modal.active { display: flex; }
-  .lightbox-img { max-width: 90vw; max-height: 85vh; border-radius: 12px; box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
-  .lightbox-close { position: absolute; top: 20px; right: 25px; color: #fff; font-size: 2rem; cursor: pointer; }
+  .lightbox-img { max-width: 90vw; max-height: 85vh; border-radius: 14px; }
+  .lightbox-close { position: absolute; top: 20px; right: 25px; color: #fff; font-size: 2.2rem; cursor: pointer; }
 </style>
 </head>
 <body>
 
+<!-- Emergency Incident Ticker -->
+<div class="ticker-bar">
+  <div style="display:flex; align-items:center; gap:0.4rem; font-weight:700; color:#22d3ee;">
+    <span class="material-symbols-outlined" style="font-size:1.1rem;">radar</span>
+    <span>LIVE RADAR</span>
+  </div>
+  <div class="ticker-content">
+    <span>🌧️ NWS Alert: Light Rain on Downtown Corridor (Rider Speed Advisory Active)</span>
+    <span>•</span>
+    <span>⚡ 12 Couriers Active | 100+ Express Orders Queued</span>
+    <span>•</span>
+    <span>🌱 Total CO2 Saved: 24.8 kg CO2e (Zero-Emission Fleet)</span>
+    <span>•</span>
+    <span>🏪 Downtown Hub #1 Stock Status: 48 SKUs Online</span>
+  </div>
+  <div style="font-size:0.72rem; color:var(--text-secondary);">Ping: 14ms | Agent Runtime us-east1</div>
+</div>
+
+<!-- Header -->
 <header>
   <div class="brand">
     <span class="material-symbols-outlined brand-icon">local_shipping</span>
     <div class="brand-text">
       <h1>NovaSmart Fleet Ops</h1>
-      <p>Autonomous Dark-Store Dispatcher & AI Agent Portal</p>
+      <p>Google Autonomous Dark-Store AI Command Center</p>
     </div>
   </div>
+
   <div class="header-actions">
+    <select class="hub-selector">
+      <option>🏪 Downtown Express Hub #1</option>
+      <option>🏪 Westside Express Hub #2</option>
+      <option>🏪 Mission District Hub #3</option>
+    </select>
+
     <div class="status-badge">
       <div class="status-dot"></div>
       <span>Agent Active</span>
     </div>
-    <button class="theme-toggle-btn" id="themeToggle" title="Toggle Dark/Light Mode">
-      <span class="material-symbols-outlined" id="themeIcon" style="color: #fff;">dark_mode</span>
+
+    <button type="button" id="themeToggle" style="background:var(--bg-main); border:1px solid var(--border); color:var(--text-primary); padding:0.45rem; border-radius:10px; cursor:pointer;" title="Toggle Theme">
+      <span class="material-symbols-outlined" id="themeIcon">dark_mode</span>
     </button>
   </div>
 </header>
 
-<!-- Enterprise Operations Dashboard Bar -->
-<div style="max-width: 1000px; margin: 0.75rem auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.75rem; padding: 0 1.5rem;">
-  <div style="background: var(--surface); border: 1px solid var(--border); padding: 0.85rem 1rem; border-radius: 14px; box-shadow: var(--shadow-sm); display: flex; align-items: center; gap: 0.75rem;">
-    <div style="background: var(--accent-light); color: var(--accent); padding: 0.6rem; border-radius: 10px; display: flex;"><span class="material-symbols-outlined">inventory_2</span></div>
+<!-- Operations HUD Bar -->
+<div class="hud-bar">
+  <div class="hud-card">
+    <div class="hud-icon"><span class="material-symbols-outlined">inventory_2</span></div>
     <div>
-      <div style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 500;">Active Orders</div>
-      <div style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary);">100+ Express</div>
+      <div class="hud-title">Active Orders</div>
+      <div class="hud-value">100+ Express</div>
     </div>
   </div>
 
-  <div style="background: var(--surface); border: 1px solid var(--border); padding: 0.85rem 1rem; border-radius: 14px; box-shadow: var(--shadow-sm); display: flex; align-items: center; gap: 0.75rem;">
-    <div style="background: var(--accent-light); color: var(--accent); padding: 0.6rem; border-radius: 10px; display: flex;"><span class="material-symbols-outlined">two_wheeler</span></div>
+  <div class="hud-card">
+    <div class="hud-icon"><span class="material-symbols-outlined">two_wheeler</span></div>
     <div>
-      <div style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 500;">Rider Telemetry</div>
-      <div style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary);">12 Active Couriers</div>
+      <div class="hud-title">Rider Fleet</div>
+      <div class="hud-value">12 Active Couriers</div>
     </div>
   </div>
 
-  <div style="background: var(--surface); border: 1px solid var(--border); padding: 0.85rem 1rem; border-radius: 14px; box-shadow: var(--shadow-sm); display: flex; align-items: center; gap: 0.75rem;">
-    <div style="background: var(--accent-light); color: var(--accent); padding: 0.6rem; border-radius: 10px; display: flex;"><span class="material-symbols-outlined">store</span></div>
+  <div class="hud-card">
+    <div class="hud-icon"><span class="material-symbols-outlined">battery_charging_full</span></div>
     <div>
-      <div style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 500;">Dark-Store Hub</div>
-      <div style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary);">Downtown #1</div>
+      <div class="hud-title">Fleet Battery</div>
+      <div class="hud-value" style="color:#10b981;">78.4% Healthy</div>
     </div>
   </div>
 
-  <div style="background: var(--surface); border: 1px solid var(--border); padding: 0.85rem 1rem; border-radius: 14px; box-shadow: var(--shadow-sm); display: flex; align-items: center; gap: 0.75rem;">
-    <div style="background: var(--accent-light); color: var(--accent); padding: 0.6rem; border-radius: 10px; display: flex;"><span class="material-symbols-outlined">cloud</span></div>
+  <div class="hud-card">
+    <div class="hud-icon"><span class="material-symbols-outlined">eco</span></div>
     <div>
-      <div style="font-size: 0.75rem; color: var(--text-secondary); font-weight: 500;">Weather Radar</div>
-      <div style="font-size: 1.1rem; font-weight: 700; color: var(--text-primary);">NWS Monitored</div>
+      <div class="hud-title">CO2 Saved</div>
+      <div class="hud-value" style="color:#22d3ee;">24.8 kg CO2e</div>
+    </div>
+  </div>
+
+  <div class="hud-card">
+    <div class="hud-icon"><span class="material-symbols-outlined">cloud</span></div>
+    <div>
+      <div class="hud-title">Weather Radar</div>
+      <div class="hud-value">NWS Active</div>
     </div>
   </div>
 </div>
 
-<div class="chat-container">
-  <div id="log"></div>
+<!-- Navigation Tabs -->
+<div class="nav-tabs">
+  <button class="tab-btn active" onclick="switchTab('chat')">
+    <span class="material-symbols-outlined" style="font-size:1.1rem;">smart_toy</span>
+    <span>AI Dispatcher Chat</span>
+  </button>
+  <button class="tab-btn" onclick="switchTab('orders')">
+    <span class="material-symbols-outlined" style="font-size:1.1rem;">orders</span>
+    <span>Express Orders (100+)</span>
+  </button>
+  <button class="tab-btn" onclick="switchTab('fleet')">
+    <span class="material-symbols-outlined" style="font-size:1.1rem;">electric_moped</span>
+    <span>Courier Fleet Telemetry</span>
+  </button>
+  <button class="tab-btn" onclick="switchTab('inventory')">
+    <span class="material-symbols-outlined" style="font-size:1.1rem;">store</span>
+    <span>Dark-Store Inventory</span>
+  </button>
+</div>
 
-  <div class="prompts-container">
-    <div class="filter-tabs">
-      <button type="button" class="prompt-btn" onclick="sendPrompt('📦 Check status of express order ORD-101')">📦 Order ORD-101</button>
-      <button type="button" class="prompt-btn" onclick="sendPrompt('📊 Analyze courier fleet performance and safety scores')">📊 Fleet Analytics</button>
-      <button type="button" class="prompt-btn" onclick="sendPrompt('🌱 Calculate estimated carbon footprint and CO2 saved for order ORD-101')">🌱 Eco Footprint</button>
-      <button type="button" class="prompt-btn" onclick="sendPrompt('🏪 Check dark-store inventory levels and low stock alerts for Downtown Hub #1')">🏪 Dark-Store Inventory</button>
-      <button type="button" class="prompt-btn" onclick="sendPrompt('⚡ Check courier telemetry for courier CR-502')">⚡ Courier Telemetry</button>
-      <button type="button" class="prompt-btn" onclick="sendPrompt('🌧️ Check delivery route weather conditions for ORD-101')">🌧️ Route Weather</button>
-      <button type="button" class="prompt-btn" onclick="sendPrompt('🗺️ Show delivery route map for express order ORD-101')">🗺️ Route Map</button>
-      <button type="button" class="prompt-btn" onclick="sendPrompt('🚀 Optimize batch dispatch assignments for pending orders at Downtown Express Hub #1')">🚀 Batch Dispatch</button>
-      <button type="button" class="prompt-btn" onclick="sendPrompt('📸 Generate a package contents preview image for ORD-101')">📸 Generate POD Image</button>
-      <button type="button" class="prompt-btn" onclick="sendPrompt('🎥 Generate a short promo video for Matcha Latte express item')">🎥 Generate Item Video</button>
+<!-- Workspace -->
+<div class="workspace">
+
+  <!-- TAB 1: Chat Workspace -->
+  <div id="tab-chat" class="tab-content active">
+    <div class="chat-container">
+      <div id="log"></div>
+
+      <div class="prompts-container">
+        <div class="filter-tabs">
+          <button type="button" class="prompt-btn" onclick="sendPrompt('📦 Check status of express order ORD-101')">📦 Order ORD-101</button>
+          <button type="button" class="prompt-btn" onclick="sendPrompt('📊 Analyze courier fleet performance and safety scores')">📊 Fleet Analytics</button>
+          <button type="button" class="prompt-btn" onclick="sendPrompt('🌱 Calculate estimated carbon footprint and CO2 saved for order ORD-101')">🌱 Eco Footprint</button>
+          <button type="button" class="prompt-btn" onclick="sendPrompt('🏪 Check dark-store inventory levels and low stock alerts for Downtown Hub #1')">🏪 Dark-Store Inventory</button>
+          <button type="button" class="prompt-btn" onclick="sendPrompt('⚡ Check courier telemetry for courier CR-502')">⚡ Courier Telemetry</button>
+          <button type="button" class="prompt-btn" onclick="sendPrompt('🌧️ Check delivery route weather conditions for ORD-101')">🌧️ Route Weather</button>
+          <button type="button" class="prompt-btn" onclick="sendPrompt('🗺️ Show delivery route map for express order ORD-101')">🗺️ Route Map</button>
+          <button type="button" class="prompt-btn" onclick="sendPrompt('🚀 Optimize batch dispatch assignments for pending orders at Downtown Express Hub #1')">🚀 Batch Dispatch</button>
+          <button type="button" class="prompt-btn" onclick="sendPrompt('📸 Generate a package contents preview image for ORD-101')">📸 Generate POD Image</button>
+          <button type="button" class="prompt-btn" onclick="sendPrompt('🎥 Generate a short promo video for Matcha Latte express item')">🎥 Generate Item Video</button>
+        </div>
+      </div>
+
+      <form id="form">
+        <input id="input" placeholder="Ask NovaSmart AI about orders, couriers, route maps, weather, or batch dispatch..." autocomplete="off" autofocus>
+        <button class="send-btn">
+          <span>Send</span>
+          <span class="material-symbols-outlined" style="font-size: 1.1rem; color: white;">send</span>
+        </button>
+      </form>
     </div>
   </div>
 
-  <form id="form">
-    <input id="input" placeholder="Ask about orders, couriers, route maps, weather, or batch dispatch..." autocomplete="off" autofocus>
-    <button class="send-btn">
-      <span>Send</span>
-      <span class="material-symbols-outlined" style="font-size: 1.1rem; color: white;">send</span>
-    </button>
-  </form>
+  <!-- TAB 2: Express Orders Table -->
+  <div id="tab-orders" class="tab-content">
+    <div class="table-card">
+      <div class="table-header">
+        <div>
+          <h2 style="font-size:1.1rem; font-weight:700;">Express Delivery Orders (100+ Live Orders)</h2>
+          <p style="font-size:0.78rem; color:var(--text-secondary);">Real-time dark-store fulfillment queue synchronized with Google Cloud Firestore</p>
+        </div>
+        <input class="search-input" id="orderSearch" placeholder="🔍 Search Order ID, Customer, Courier..." onkeyup="filterOrders()">
+      </div>
+
+      <table id="ordersTable">
+        <thead>
+          <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Items</th>
+            <th>Delivery Address</th>
+            <th>Assigned Courier</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>ORD-101</strong></td>
+            <td>Sophia Martinez</td>
+            <td>Iced Matcha Latte, Avocado Toast</td>
+            <td>742 Market St, San Francisco</td>
+            <td>CR-101 (Elena Rostova)</td>
+            <td><span class="status-pill status-intransit">In Transit</span></td>
+            <td>
+              <button class="action-chip" onclick="sendPrompt('📦 Check status of express order ORD-101'); switchTab('chat');">Inspect</button>
+              <button class="action-chip" onclick="sendPrompt('🗺️ Show delivery route map for express order ORD-101'); switchTab('chat');">Map</button>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>ORD-102</strong></td>
+            <td>Liam Chen</td>
+            <td>Organic Cold Brew, Berry Parfait</td>
+            <td>101 California St, San Francisco</td>
+            <td>CR-502 (Carlos Gomez)</td>
+            <td><span class="status-pill status-intransit">In Transit</span></td>
+            <td>
+              <button class="action-chip" onclick="sendPrompt('📦 Check status of express order ORD-102'); switchTab('chat');">Inspect</button>
+              <button class="action-chip" onclick="sendPrompt('🌧️ Check delivery route weather conditions for ORD-102'); switchTab('chat');">Weather</button>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>ORD-103</strong></td>
+            <td>Emma Watson</td>
+            <td>Acai Superfood Bowl</td>
+            <td>50 Fremont St, San Francisco</td>
+            <td>CR-304 (Maya Lin)</td>
+            <td><span class="status-pill status-pending">Pending</span></td>
+            <td>
+              <button class="action-chip" onclick="sendPrompt('🚀 Optimize batch dispatch assignments for pending orders at Downtown Express Hub #1'); switchTab('chat');">Dispatch</button>
+            </td>
+          </tr>
+          <tr>
+            <td><strong>ORD-104</strong></td>
+            <td>Alexander Wright</td>
+            <td>Matcha Latte, Sourdough Toast</td>
+            <td>201 Mission St, San Francisco</td>
+            <td>CR-108 (Leo Vance)</td>
+            <td><span class="status-pill status-delivered">Delivered</span></td>
+            <td>
+              <button class="action-chip" onclick="sendPrompt('📸 Generate a package contents preview image for ORD-104'); switchTab('chat');">POD Image</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- TAB 3: Courier Fleet Telemetry -->
+  <div id="tab-fleet" class="tab-content">
+    <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:1rem;">
+      <div class="table-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
+          <h3 style="font-size:1rem; font-weight:700;">Elena Rostova (CR-101)</h3>
+          <span style="background:rgba(16,185,129,0.15); color:#34d399; font-size:0.72rem; padding:0.25rem 0.5rem; border-radius:10px; font-weight:700;">In Transit</span>
+        </div>
+        <p style="font-size:0.82rem; color:var(--text-secondary); margin-bottom:0.5rem;">Vehicle: ⚡ E-Bike (Zero-Emission)</p>
+        <p style="font-size:0.82rem; color:var(--text-secondary); margin-bottom:0.5rem;">Speed: 22.4 km/h | Safety Score: 98/100</p>
+        <div style="background:var(--bg-main); height:8px; border-radius:4px; overflow:hidden; margin-bottom:0.75rem;">
+          <div style="background:#10b981; width:88%; height:100%;"></div>
+        </div>
+        <button class="action-chip" style="width:100%; padding:0.5rem;" onclick="sendPrompt('⚡ Check courier telemetry for courier CR-101'); switchTab('chat');">Ping Rider Telemetry</button>
+      </div>
+
+      <div class="table-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
+          <h3 style="font-size:1rem; font-weight:700;">Marcus Vance (CR-102)</h3>
+          <span style="background:rgba(245,158,11,0.15); color:#fbbf24; font-size:0.72rem; padding:0.25rem 0.5rem; border-radius:10px; font-weight:700;">Low Battery</span>
+        </div>
+        <p style="font-size:0.82rem; color:var(--text-secondary); margin-bottom:0.5rem;">Vehicle: 🛵 Cargo Scooter</p>
+        <p style="font-size:0.82rem; color:var(--text-secondary); margin-bottom:0.5rem;">Speed: 18.0 km/h | Safety Score: 94/100</p>
+        <div style="background:var(--bg-main); height:8px; border-radius:4px; overflow:hidden; margin-bottom:0.75rem;">
+          <div style="background:#f59e0b; width:42%; height:100%;"></div>
+        </div>
+        <button class="action-chip" style="width:100%; padding:0.5rem;" onclick="sendPrompt('📊 Analyze courier fleet performance and safety scores'); switchTab('chat');">Run Battery Swap Alert</button>
+      </div>
+
+      <div class="table-card">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
+          <h3 style="font-size:1rem; font-weight:700;">Kai Chen (CR-103)</h3>
+          <span style="background:rgba(99,102,241,0.15); color:#818cf8; font-size:0.72rem; padding:0.25rem 0.5rem; border-radius:10px; font-weight:700;">Idle at Hub #1</span>
+        </div>
+        <p style="font-size:0.82rem; color:var(--text-secondary); margin-bottom:0.5rem;">Vehicle: 🚙 Heavy EV Pod</p>
+        <p style="font-size:0.82rem; color:var(--text-secondary); margin-bottom:0.5rem;">Speed: 0.0 km/h | Safety Score: 100/100</p>
+        <div style="background:var(--bg-main); height:8px; border-radius:4px; overflow:hidden; margin-bottom:0.75rem;">
+          <div style="background:#10b981; width:95%; height:100%;"></div>
+        </div>
+        <button class="action-chip" style="width:100%; padding:0.5rem;" onclick="sendPrompt('🚀 Optimize batch dispatch assignments for pending orders at Downtown Express Hub #1'); switchTab('chat');">Assign Heavy Batch</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- TAB 4: Dark-Store Inventory -->
+  <div id="tab-inventory" class="tab-content">
+    <div class="table-card">
+      <h3 style="font-size:1rem; font-weight:700; margin-bottom:0.75rem;">Downtown Express Hub #1 Inventory Snapshot</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>SKU</th>
+            <th>Item Name</th>
+            <th>Stock Qty</th>
+            <th>Reorder Point</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>SKU-1001</td>
+            <td>Iced Matcha Latte</td>
+            <td>48 units</td>
+            <td>15 units</td>
+            <td><span class="status-pill status-delivered">In Stock</span></td>
+            <td><button class="action-chip" onclick="sendPrompt('🎥 Generate a short promo video for Matcha Latte express item'); switchTab('chat');">Promo Video</button></td>
+          </tr>
+          <tr>
+            <td>SKU-1002</td>
+            <td>Avocado Protein Bowl</td>
+            <td>8 units</td>
+            <td>10 units</td>
+            <td><span class="status-pill status-pending">LOW STOCK</span></td>
+            <td><button class="action-chip" onclick="sendPrompt('🏪 Check dark-store inventory levels and low stock alerts for Downtown Hub #1'); switchTab('chat');">Auto-Reorder</button></td>
+          </tr>
+          <tr>
+            <td>SKU-1003</td>
+            <td>Organic Cold Brew Coffee</td>
+            <td>62 units</td>
+            <td>20 units</td>
+            <td><span class="status-pill status-delivered">In Stock</span></td>
+            <td><button class="action-chip" onclick="sendPrompt('📸 Generate a package contents preview image for ORD-102'); switchTab('chat');">Preview Image</button></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
 </div>
 
-<!-- Image Lightbox Modal -->
-<div class="lightbox-modal" id="lightbox" onclick="closeLightbox()">
-  <span class="lightbox-close">&times;</span>
-  <img class="lightbox-img" id="lightboxImg" src="" alt="Preview">
+<!-- Lightbox Modal -->
+<div class="lightbox-modal" id="lightboxModal">
+  <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+  <img class="lightbox-img" id="lightboxImg" src="" alt="Fullscreen Lightbox">
 </div>
 
 <script>
-const log = document.getElementById("log");
-const form = document.getElementById("form");
-const input = document.getElementById("input");
-const themeToggle = document.getElementById("themeToggle");
-const themeIcon = document.getElementById("themeIcon");
+  const log = document.getElementById('log');
+  const form = document.getElementById('form');
+  const input = document.getElementById('input');
+  const themeToggle = document.getElementById('themeToggle');
+  const themeIcon = document.getElementById('themeIcon');
 
-// Dark Mode Toggle
-if (localStorage.getItem("theme") === "dark") {
-  document.body.classList.add("dark-theme");
-  themeIcon.textContent = "light_mode";
-}
+  function switchTab(tabName) {
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
 
-themeToggle.addEventListener("click", () => {
-  document.body.classList.toggle("dark-theme");
-  const isDark = document.body.classList.contains("dark-theme");
-  themeIcon.textContent = isDark ? "light_mode" : "dark_mode";
-  localStorage.setItem("theme", isDark ? "dark" : "light");
-});
-
-function sendPrompt(text) {
-  input.value = text;
-  form.dispatchEvent(new Event("submit", { cancelable: true }));
-}
-
-function getTimeStr() {
-  return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-}
-
-function copyText(btn, text) {
-  navigator.clipboard.writeText(text);
-  const orig = btn.innerHTML;
-  btn.innerHTML = "✅ Copied";
-  setTimeout(() => { btn.innerHTML = orig; }, 1800);
-}
-
-function el(tag, className, text) {
-  const elem = document.createElement(tag);
-  if (className) elem.className = className;
-  if (text) elem.textContent = text;
-  return elem;
-}
-
-function bubble(role) {
-  const m = el("div", "msg " + role);
-  const label = el("div", "sender-header", role === "user" ? "You" : "VelocityBot");
-  const b = el("div", "bubble");
-  m.appendChild(label);
-  m.appendChild(b);
-  log.appendChild(m);
-  log.scrollTop = log.scrollHeight;
-  return { msgNode: m, bubbleNode: b };
-}
-
-function showTypingIndicator() {
-  const m = el("div", "msg agent");
-  const label = el("div", "sender-header", "VelocityBot");
-  const indicator = el("div", "typing-indicator");
-  indicator.appendChild(el("div", "typing-dot"));
-  indicator.appendChild(el("div", "typing-dot"));
-  indicator.appendChild(el("div", "typing-dot"));
-  m.appendChild(label);
-  m.appendChild(indicator);
-  log.appendChild(m);
-  log.scrollTop = log.scrollHeight;
-  return m;
-}
-
-// Lightbox modal logic
-function openLightbox(src) {
-  document.getElementById("lightboxImg").src = src;
-  document.getElementById("lightbox").classList.add("active");
-}
-
-function closeLightbox() {
-  document.getElementById("lightbox").classList.remove("active");
-}
-
-/* ----------------------------------------------------------------------------
- * A2UI mini-renderer (v0.8 Basic Catalog subset).
- * -------------------------------------------------------------------------- */
-function boundStr(v) {
-  if (v == null) return "";
-  if (typeof v === "string") return v;
-  if (typeof v.literalString === "string") return v.literalString;
-  return "";
-}
-
-function childIds(props) {
-  const ids = [];
-  if (props && typeof props.child === "string") ids.push(props.child);
-  const ch = props && props.children;
-  if (ch && Array.isArray(ch.explicitList)) for (const c of ch.explicitList) if (typeof c === "string") ids.push(c);
-  return ids;
-}
-
-function iconName(n) { return String(n || "").replace(/([a-z0-9])([A-Z])/g, "$1_$2").replace(/\s+/g, "_").toLowerCase(); }
-
-function buildNode(id, comps, seen) {
-  if (!id || seen.has(id)) return null;
-  seen.add(id);
-  const spec = comps[id];
-  if (!spec || typeof spec !== "object") return null;
-  const type = Object.keys(spec)[0];
-  const props = spec[type] || {};
-  const kids = () => childIds(props).map(cid => buildNode(cid, comps, seen)).filter(Boolean);
-
-  switch (type) {
-    case "Card": {
-      const d = el("div", "a2card"); kids().forEach(n => d.appendChild(n)); return d;
-    }
-    case "Column":
-    case "List": {
-      const horizontal = type === "List" && props.direction === "horizontal";
-      const d = el("div", horizontal ? "a2row" : "a2col"); kids().forEach(n => d.appendChild(n)); return d;
-    }
-    case "Row": {
-      const d = el("div", "a2row" + (props.distribution === "spaceBetween" ? " between" : ""));
-      kids().forEach(n => d.appendChild(n)); return d;
-    }
-    case "Text": {
-      const t = el("div", "a2text");
-      const hint = String(props.usageHint || "body").toLowerCase();
-      if (["h1", "h2", "h3", "h4", "h5", "h6"].includes(hint)) t.classList.add("a2-" + hint);
-      else if (hint === "caption") t.classList.add("a2-caption");
-      t.textContent = boundStr(props.text);
-      return t;
-    }
-    case "Divider":
-      return el("hr", "a2divider");
-    case "Image": {
-      const src = boundStr(props.url || props.src);
-      if (!/^https?:\/\//i.test(src)) return null;
-      const img = el("img", "a2img"); 
-      img.src = src; 
-      img.alt = boundStr(props.alt) || ""; 
-      img.onclick = () => openLightbox(src);
-      return img;
-    }
-    case "Icon": {
-      const s = el("span", "material-symbols-outlined"); s.textContent = iconName(boundStr(props.name) || props.name); return s;
-    }
-    default:
-      return null;
+    event.currentTarget?.classList?.add('active');
+    const target = document.getElementById('tab-' + tabName);
+    if (target) target.classList.add('active');
   }
-}
 
-function renderSurface(messages, container) {
-  const comps = {};
-  const roots = [];
-  for (const m of messages) {
-    if (m.beginRendering && typeof m.beginRendering.root === "string") roots.push(m.beginRendering.root);
-    const su = m.surfaceUpdate;
-    if (su && Array.isArray(su.components)) for (const c of su.components) if (c && c.id && c.component) comps[c.id] = c.component;
-  }
-  let rootIds = roots.filter(r => comps[r]);
-  if (rootIds.length === 0) {
-    const referenced = new Set();
-    for (const id in comps) { const spec = comps[id]; childIds(spec[Object.keys(spec)[0]] || {}).forEach(c => referenced.add(c)); }
-    rootIds = Object.keys(comps).filter(id => !referenced.has(id));
-  }
-  let drew = false;
-  for (const rid of rootIds) { const node = buildNode(rid, comps, new Set()); if (node) { container.appendChild(node); drew = true; } }
-  return drew;
-}
-
-function flattenText(messages) {
-  const out = [];
-  for (const m of messages) {
-    const su = m.surfaceUpdate;
-    if (su && Array.isArray(su.components)) for (const c of su.components) if (c && c.component && c.component.Text) out.push(boundStr(c.component.Text.text));
-  }
-  return out.join("\n").trim();
-}
-
-function attachCardActionButtons(container, textStr) {
-  // Extract order ID if present (e.g., ORD-101)
-  const orderMatch = textStr.match(/ORD-\d+/i);
-  if (!orderMatch) return;
-  const orderId = orderMatch[0].toUpperCase();
-
-  const actionsDiv = el("div", "card-actions");
-
-  const deliverBtn = el("button", "action-pill", "📦 Mark Delivered");
-  deliverBtn.onclick = () => sendPrompt(`Update order ${orderId} status to Delivered`);
-
-  const weatherBtn = el("button", "action-pill", "🌧️ Route Weather");
-  weatherBtn.onclick = () => sendPrompt(`Check delivery route weather conditions for ${orderId}`);
-
-  const mapBtn = el("button", "action-pill", "🗺️ Route Map");
-  mapBtn.onclick = () => sendPrompt(`Show delivery route map for express order ${orderId}`);
-
-  actionsDiv.appendChild(deliverBtn);
-  actionsDiv.appendChild(weatherBtn);
-  actionsDiv.appendChild(mapBtn);
-
-  container.appendChild(actionsDiv);
-}
-
-function renderReply(bubbleObj, parts) {
-  const b = bubbleObj.bubbleNode;
-  const m = bubbleObj.msgNode;
-  b.textContent = "";
-
-  const texts = parts.filter(p => p && (p.kind === "text" || (!p.kind && p.text))).map(p => p.text || "");
-  const a2ui = parts.filter(p => p && p.kind === "a2ui" && p.data).map(p => p.data);
-
-  const textStr = texts.join("\n").trim();
-  if (textStr) {
-    const videoMatch = textStr.match(/https:\/\/storage\.googleapis\.com\/[^\s"'\)]+\.mp4/i);
-    const staticMapMatch = textStr.match(/https:\/\/maps\.googleapis\.com\/maps\/api\/staticmap[^\s"'\)]+/i);
-
-    if (videoMatch) {
-      const vidUrl = videoMatch[0];
-      const vidNode = el("video", "a2video");
-      vidNode.src = vidUrl;
-      vidNode.controls = true;
-      vidNode.style.maxWidth = "100%";
-      vidNode.style.borderRadius = "12px";
-      vidNode.style.marginTop = "8px";
-      vidNode.style.boxShadow = "0 4px 12px rgba(0,0,0,0.15)";
-      const cleanText = textStr.replace(vidUrl, "").trim();
-      if (cleanText) b.appendChild(el("div", null, cleanText));
-      b.appendChild(vidNode);
-    } else if (staticMapMatch) {
-      const mapUrl = staticMapMatch[0];
-      const imgNode = el("img", "a2img");
-      imgNode.src = mapUrl;
-      imgNode.onclick = () => openLightbox(mapUrl);
-      b.appendChild(el("div", null, textStr.replace(mapUrl, "").trim()));
-      b.appendChild(imgNode);
+  themeToggle.addEventListener('click', () => {
+    document.body.classList.toggle('light-theme');
+    if (document.body.classList.contains('light-theme')) {
+      themeIcon.textContent = 'light_mode';
     } else {
-      b.appendChild(el("div", null, textStr));
+      themeIcon.textContent = 'dark_mode';
     }
+  });
+
+  function openLightbox(url) {
+    document.getElementById('lightboxImg').src = url;
+    document.getElementById('lightboxModal').classList.add('active');
   }
 
-  if (a2ui.length) {
-    b.classList.add("rich");
-    if (!renderSurface(a2ui, b)) b.appendChild(el("div", null, flattenText(a2ui) || "(no card content)"));
-    const allText = textStr + "\n" + flattenText(a2ui);
-    attachCardActionButtons(b, allText);
-  } else if (textStr && /ORD-\d+/i.test(textStr)) {
-    attachCardActionButtons(b, textStr);
+  function closeLightbox() {
+    document.getElementById('lightboxModal').classList.remove('active');
   }
 
-  if (!b.childNodes.length) b.textContent = "(no response)";
-
-  // Add Footer with Timestamp and Copy button
-  const footer = el("div", "msg-footer");
-  footer.appendChild(el("span", null, getTimeStr()));
-  if (textStr) {
-    const cpBtn = el("button", "copy-btn", "📋 Copy");
-    cpBtn.onclick = () => copyText(cpBtn, textStr);
-    footer.appendChild(cpBtn);
+  function filterOrders() {
+    const q = document.getElementById('orderSearch').value.toLowerCase();
+    const rows = document.querySelectorAll('#ordersTable tbody tr');
+    rows.forEach(row => {
+      const text = row.innerText.toLowerCase();
+      row.style.display = text.includes(q) ? '' : 'none';
+    });
   }
-  m.appendChild(footer);
-  log.scrollTop = log.scrollHeight;
-}
 
-form.addEventListener("submit", async (ev) => {
-  ev.preventDefault();
-  const text = input.value.trim();
-  if (!text) return;
-  
-  const userObj = bubble("user");
-  userObj.bubbleNode.textContent = text;
-  const userFooter = el("div", "msg-footer", getTimeStr());
-  userObj.msgNode.appendChild(userFooter);
-  
-  input.value = "";
-  const typingNode = showTypingIndicator();
-
-  try {
-    const res = await fetch("/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ message: text }) });
-    typingNode.remove();
-    const agentObj = bubble("agent");
-
-    const raw = await res.text();
-    let data;
-    try { data = JSON.parse(raw); }
-    catch { throw new Error(`Server returned non-JSON (HTTP ${res.status}). ${raw.slice(0, 300)}`); }
-    renderReply(agentObj, data.parts || []);
-  } catch (e) {
-    typingNode.remove();
-    const agentObj = bubble("agent");
-    agentObj.bubbleNode.textContent = "Error: " + e.message;
+  function addMessage(sender, htmlContent) {
+    const msgDiv = document.createElement('div');
+    msgDiv.className = `message ${sender}`;
+    const bubble = document.createElement('div');
+    bubble.className = 'bubble';
+    bubble.innerHTML = htmlContent;
+    msgDiv.appendChild(bubble);
+    log.appendChild(msgDiv);
+    log.scrollTop = log.scrollHeight;
   }
-});
+
+  function sendPrompt(text) {
+    input.value = text;
+    form.dispatchEvent(new Event('submit'));
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const text = input.value.trim();
+    if (!text) return;
+
+    addMessage('user', text);
+    input.value = '';
+
+    const thinkingDiv = document.createElement('div');
+    thinkingDiv.className = 'message assistant';
+    thinkingDiv.innerHTML = `<div class="bubble" style="color:var(--text-secondary); display:flex; align-items:center; gap:0.5rem;"><span class="material-symbols-outlined" style="animation:spin 1s linear infinite;">sync</span> NovaSmart AI processing request...</div>`;
+    log.appendChild(thinkingDiv);
+    log.scrollTop = log.scrollHeight;
+
+    try {
+      const res = await fetch('/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: text })
+      });
+
+      thinkingDiv.remove();
+
+      if (!res.ok) {
+        addMessage('assistant', `⚠️ Server returned error status ${res.status}`);
+        return;
+      }
+
+      const data = await res.json();
+      if (data.parts && data.parts.length > 0) {
+        data.parts.forEach(part => {
+          if (part.type === 'text') {
+            let text = part.content || '';
+            // Convert video URLs to embedded HTML5 video players
+            text = text.replace(/(https:\/\/storage\.googleapis\.com\/[^\s"']+\.mp4)/g, (match) => {
+              return `<div style="margin-top:0.75rem;"><video controls style="width:100%; max-width:540px; border-radius:12px; border:1px solid var(--border); shadow:var(--card-shadow);"><source src="${match}" type="video/mp4"></video><br><a href="${match}" target="_blank" style="color:var(--accent); font-size:0.78rem; text-decoration:underline;">📥 Download 3D Promo Video</a></div>`;
+            });
+            // Convert image URLs to embedded images
+            text = text.replace(/(https:\/\/storage\.googleapis\.com\/[^\s"']+\.(png|jpg|jpeg|webp))/g, (match) => {
+              return `<div style="margin-top:0.75rem;"><img src="${match}" onclick="openLightbox('${match}')" style="width:100%; max-width:480px; border-radius:12px; border:1px solid var(--border); cursor:pointer;"><br><a href="${match}" target="_blank" style="color:var(--accent); font-size:0.78rem; text-decoration:underline;">📸 Open Preview Image</a></div>`;
+            });
+            addMessage('assistant', text.replace(/\n/g, '<br>'));
+          } else if (part.type === 'a2ui') {
+            addMessage('assistant', `<strong>📊 Interactive A2UI Card</strong><pre style="font-size:0.78rem; background:var(--bg-main); padding:0.5rem; border-radius:8px; margin-top:0.5rem; overflow-x:auto;">${JSON.stringify(part.data, null, 2)}</pre>`);
+          }
+        });
+      } else {
+        addMessage('assistant', 'NovaSmart AI completed the request successfully.');
+      }
+    } catch (err) {
+      thinkingDiv.remove();
+      addMessage('assistant', `❌ Connection error: ${err.message}`);
+    }
+  });
+
+  // Welcome message
+  window.addEventListener('load', () => {
+    addMessage('assistant', `<strong>👋 Welcome to NovaSmart Fleet Ops Command Center!</strong><br>I am your Google AI autonomous fleet dispatcher. Select a quick action pill below or ask me about express orders, rider telemetry, route maps, weather radar, or 3D item promo videos.`);
+  });
 </script>
+<style>
+  @keyframes spin { 100% { transform: rotate(360deg); } }
+</style>
 </body>
 </html>
