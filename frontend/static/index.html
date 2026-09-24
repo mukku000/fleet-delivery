@@ -8,7 +8,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
-<!-- Leaflet.js Vector Map Engine -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
@@ -25,7 +24,7 @@
     --accent-cyan: #06b6d4;
     --accent-purple: #a855f7;
     --gradient-glow: linear-gradient(135deg, #6366f1 0%, #06b6d4 50%, #a855f7 100%);
-    --gradient-card: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+    --gradient-card: linear-gradient(180deg, rgba(255,255,255,0.06) 0%, rgba(255,255,255,0.02) 100%);
     --shadow-glow: 0 0 35px rgba(99, 102, 241, 0.18);
     --radius-lg: 20px;
     --radius-md: 14px;
@@ -44,254 +43,179 @@
     flex-direction: column;
   }
 
-  /* Ambient Mesh Canvas Background */
   .ambient-bg {
-    position: fixed;
-    top: 0; left: 0; width: 100vw; height: 100vh;
-    z-index: -1;
-    overflow: hidden;
-    pointer-events: none;
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    z-index: -1; overflow: hidden; pointer-events: none;
   }
-
   .glow-1 {
     position: absolute; top: -10%; left: 15%; width: 550px; height: 550px;
-    background: radial-gradient(circle, rgba(99, 102, 241, 0.28) 0%, rgba(0,0,0,0) 70%);
-    filter: blur(70px);
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.28) 0%, rgba(0,0,0,0) 70%); filter: blur(70px);
   }
-
   .glow-2 {
     position: absolute; bottom: -10%; right: 10%; width: 650px; height: 650px;
-    background: radial-gradient(circle, rgba(6, 182, 212, 0.22) 0%, rgba(0,0,0,0) 70%);
-    filter: blur(90px);
+    background: radial-gradient(circle, rgba(6, 182, 212, 0.22) 0%, rgba(0,0,0,0) 70%); filter: blur(90px);
   }
 
-  /* Header */
   header {
-    background: var(--surface-glass);
-    backdrop-filter: blur(20px);
-    border-bottom: 1px solid var(--border-glass);
-    padding: 0.85rem 1.75rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    z-index: 20;
+    background: var(--surface-glass); backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border-glass); padding: 0.85rem 1.75rem;
+    display: flex; align-items: center; justify-content: space-between; z-index: 20;
   }
-
   .brand-group { display: flex; align-items: center; gap: 1rem; }
-
   .brand-logo {
-    width: 44px; height: 44px;
-    background: var(--gradient-glow);
-    border-radius: var(--radius-md);
-    display: flex; align-items: center; justify-content: center;
+    width: 44px; height: 44px; background: var(--gradient-glow);
+    border-radius: var(--radius-md); display: flex; align-items: center; justify-content: center;
     box-shadow: 0 0 25px rgba(99, 102, 241, 0.45);
   }
-
   .brand-logo span { font-size: 1.6rem; color: #ffffff; }
-
   .brand-title h1 {
-    font-family: 'Outfit', sans-serif;
-    font-size: 1.35rem; font-weight: 800;
-    letter-spacing: -0.02em;
-    background: var(--gradient-glow);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+    font-family: 'Outfit', sans-serif; font-size: 1.35rem; font-weight: 800;
+    letter-spacing: -0.02em; background: var(--gradient-glow);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   }
-
   .brand-title p { font-size: 0.78rem; color: var(--text-secondary); font-weight: 500; }
 
   .header-actions { display: flex; align-items: center; gap: 1rem; }
-
   .fast-badge {
-    background: rgba(16, 185, 129, 0.15);
-    border: 1px solid rgba(16, 185, 129, 0.35);
-    color: #34d399;
-    padding: 0.4rem 0.85rem;
-    border-radius: 30px;
-    font-size: 0.78rem; font-weight: 700;
-    display: flex; align-items: center; gap: 0.4rem;
+    background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.35);
+    color: #34d399; padding: 0.4rem 0.85rem; border-radius: 30px;
+    font-size: 0.78rem; font-weight: 700; display: flex; align-items: center; gap: 0.4rem;
   }
-
   .pulse-dot {
-    width: 8px; height: 8px;
-    background: #10b981; border-radius: 50%;
-    box-shadow: 0 0 12px #10b981;
-    animation: pulse 2s infinite;
+    width: 8px; height: 8px; background: #10b981; border-radius: 50%;
+    box-shadow: 0 0 12px #10b981; animation: pulse 2s infinite;
   }
+  @keyframes pulse { 0% { transform: scale(0.95); opacity: 0.8; } 50% { transform: scale(1.15); opacity: 1; } 100% { transform: scale(0.95); opacity: 0.8; } }
 
-  @keyframes pulse {
-    0% { transform: scale(0.95); opacity: 0.8; }
-    50% { transform: scale(1.15); opacity: 1; }
-    100% { transform: scale(0.95); opacity: 0.8; }
-  }
-
-  /* App Main Grid */
   .app-layout {
-    flex: 1;
-    display: grid;
-    grid-template-columns: 380px 1fr;
-    gap: 1.25rem;
-    padding: 1.25rem;
-    overflow: hidden;
+    flex: 1; display: grid; grid-template-columns: 380px 1fr;
+    gap: 1.25rem; padding: 1.25rem; overflow: hidden;
   }
 
-  /* Left Sidebar */
   .sidebar {
-    background: var(--surface-glass);
-    backdrop-filter: blur(20px);
-    border: 1px solid var(--border-glass);
-    border-radius: var(--radius-lg);
-    padding: 1.25rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
-    overflow-y: auto;
-    box-shadow: var(--shadow-glow);
+    background: var(--surface-glass); backdrop-filter: blur(20px);
+    border: 1px solid var(--border-glass); border-radius: var(--radius-lg);
+    padding: 1.25rem; display: flex; flex-direction: column; gap: 1.25rem;
+    overflow-y: auto; box-shadow: var(--shadow-glow);
   }
 
   .section-title {
-    font-family: 'Outfit', sans-serif;
-    font-size: 0.88rem; font-weight: 700;
-    text-transform: uppercase; letter-spacing: 0.06em;
-    color: var(--text-secondary);
+    font-family: 'Outfit', sans-serif; font-size: 0.88rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-secondary);
     display: flex; align-items: center; justify-content: space-between;
   }
 
-  /* Leaflet Vector Map Canvas */
-  #map {
-    height: 180px;
-    width: 100%;
-    border-radius: var(--radius-md);
-    border: 1px solid var(--border-glass);
-    overflow: hidden;
-  }
+  #map { height: 180px; width: 100%; border-radius: var(--radius-md); border: 1px solid var(--border-glass); overflow: hidden; }
 
-  /* Stats Grid */
   .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
-
   .stat-card {
-    background: var(--gradient-card);
-    border: 1px solid var(--border-glass);
-    border-radius: var(--radius-md);
-    padding: 0.85rem;
-    transition: all 0.2s ease;
+    background: var(--gradient-card); border: 1px solid var(--border-glass);
+    border-radius: var(--radius-md); padding: 0.85rem; transition: all 0.2s ease;
   }
-
   .stat-card:hover { border-color: var(--border-active); transform: translateY(-2px); }
-
   .stat-label { font-size: 0.72rem; color: var(--text-secondary); font-weight: 500; margin-bottom: 0.3rem; }
   .stat-val { font-family: 'Outfit', sans-serif; font-size: 1.15rem; font-weight: 700; }
 
-  /* Quick Action Buttons */
   .action-pills { display: flex; flex-direction: column; gap: 0.5rem; }
-
   .pill-btn {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid var(--border-glass);
-    color: var(--text-primary);
-    padding: 0.65rem 0.9rem;
-    border-radius: var(--radius-sm);
-    font-size: 0.82rem; font-weight: 600;
-    text-align: left; cursor: pointer;
-    display: flex; align-items: center; justify-content: space-between;
-    transition: all 0.2s ease;
+    background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-glass);
+    color: var(--text-primary); padding: 0.65rem 0.9rem; border-radius: var(--radius-sm);
+    font-size: 0.82rem; font-weight: 600; text-align: left; cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between; transition: all 0.2s ease;
   }
-
   .pill-btn:hover {
-    background: var(--surface-hover);
-    border-color: var(--accent-primary);
-    box-shadow: 0 0 15px rgba(99, 102, 241, 0.25);
-    transform: translateX(3px);
+    background: var(--surface-hover); border-color: var(--accent-primary);
+    box-shadow: 0 0 15px rgba(99, 102, 241, 0.25); transform: translateX(3px);
   }
 
-  /* Dispatch Simulator Button */
   .dispatch-sim-btn {
-    background: var(--gradient-glow);
-    color: white; border: none;
-    padding: 0.75rem 1rem;
-    border-radius: var(--radius-md);
-    font-weight: 700; font-size: 0.85rem;
-    cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem;
-    box-shadow: 0 0 20px rgba(99, 102, 241, 0.35);
-    transition: transform 0.2s ease;
+    background: var(--gradient-glow); color: white; border: none;
+    padding: 0.75rem 1rem; border-radius: var(--radius-md);
+    font-weight: 700; font-size: 0.85rem; cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.35); transition: transform 0.2s ease;
   }
   .dispatch-sim-btn:hover { transform: scale(1.02); }
 
-  /* Right Canvas */
   .canvas {
-    background: var(--surface-glass);
-    backdrop-filter: blur(20px);
-    border: 1px solid var(--border-glass);
-    border-radius: var(--radius-lg);
-    display: flex; flex-direction: column;
-    overflow: hidden; box-shadow: var(--shadow-glow);
+    background: var(--surface-glass); backdrop-filter: blur(20px);
+    border: 1px solid var(--border-glass); border-radius: var(--radius-lg);
+    display: flex; flex-direction: column; overflow: hidden; box-shadow: var(--shadow-glow);
   }
 
   .canvas-header {
-    padding: 1rem 1.5rem;
-    border-bottom: 1px solid var(--border-glass);
+    padding: 1rem 1.5rem; border-bottom: 1px solid var(--border-glass);
     display: flex; align-items: center; justify-content: space-between;
   }
 
   .chat-thread {
-    flex: 1; padding: 1.5rem;
-    overflow-y: auto; display: flex; flex-direction: column; gap: 1.25rem;
+    flex: 1; padding: 1.5rem; overflow-y: auto;
+    display: flex; flex-direction: column; gap: 1.25rem;
   }
 
-  .msg-row { display: flex; flex-direction: column; max-width: 84%; animation: msgFade 0.25s ease-out; }
+  .msg-row { display: flex; flex-direction: column; max-width: 86%; animation: msgFade 0.25s ease-out; }
   @keyframes msgFade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
   .msg-row.user { align-self: flex-end; }
   .msg-row.assistant { align-self: flex-start; }
 
   .msg-bubble {
-    padding: 1rem 1.25rem;
-    border-radius: var(--radius-md);
+    padding: 1rem 1.25rem; border-radius: var(--radius-md);
     font-size: 0.92rem; line-height: 1.6;
   }
 
   .user .msg-bubble {
-    background: var(--gradient-glow);
-    color: #ffffff; border-bottom-right-radius: 4px; font-weight: 500;
+    background: var(--gradient-glow); color: #ffffff;
+    border-bottom-right-radius: 4px; font-weight: 500;
   }
 
   .assistant .msg-bubble {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid var(--border-glass);
+    background: rgba(255, 255, 255, 0.03); border: 1px solid var(--border-glass);
     color: var(--text-primary); border-bottom-left-radius: 4px;
   }
 
-  /* Input Form */
+  /* Rich A2UI Visual Component Card Styling */
+  .a2ui-card {
+    background: linear-gradient(135deg, rgba(30, 41, 59, 0.9) 0%, rgba(15, 23, 42, 0.95) 100%);
+    border: 1px solid rgba(99, 102, 241, 0.35);
+    border-radius: 16px;
+    padding: 1.25rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), 0 0 20px rgba(99, 102, 241, 0.15);
+    margin-top: 0.5rem;
+    max-width: 520px;
+  }
+  .a2ui-card h3 {
+    font-family: 'Outfit', sans-serif;
+    font-size: 1.15rem; font-weight: 700;
+    color: #818cf8; margin-bottom: 0.75rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .a2ui-card .a2ui-body-text {
+    font-size: 0.88rem; color: #e2e8f0;
+    margin-bottom: 0.45rem; line-height: 1.5;
+  }
+
   .input-bar {
-    padding: 1rem 1.5rem;
-    border-top: 1px solid var(--border-glass);
-    background: rgba(17, 24, 39, 0.4);
-    display: flex; gap: 0.85rem;
+    padding: 1rem 1.5rem; border-top: 1px solid var(--border-glass);
+    background: rgba(17, 24, 39, 0.4); display: flex; gap: 0.85rem;
   }
 
   .chat-input {
-    flex: 1;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid var(--border-glass);
-    color: var(--text-primary);
-    padding: 0.85rem 1.25rem;
-    border-radius: var(--radius-md);
-    font-size: 0.92rem; outline: none;
-    transition: all 0.2s ease;
+    flex: 1; background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-glass); color: var(--text-primary);
+    padding: 0.85rem 1.25rem; border-radius: var(--radius-md);
+    font-size: 0.92rem; outline: none; transition: all 0.2s ease;
   }
 
   .chat-input:focus {
-    border-color: var(--accent-primary);
-    box-shadow: 0 0 20px rgba(99, 102, 241, 0.25);
+    border-color: var(--accent-primary); box-shadow: 0 0 20px rgba(99, 102, 241, 0.25);
   }
 
   .submit-btn {
-    background: var(--gradient-glow);
-    color: #ffffff; border: none;
-    padding: 0.85rem 1.5rem;
-    border-radius: var(--radius-md);
-    font-weight: 700; font-size: 0.9rem;
-    cursor: pointer; display: flex; align-items: center; gap: 0.5rem;
+    background: var(--gradient-glow); color: #ffffff; border: none;
+    padding: 0.85rem 1.5rem; border-radius: var(--radius-md);
+    font-weight: 700; font-size: 0.9rem; cursor: pointer;
+    display: flex; align-items: center; gap: 0.5rem;
     box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
   }
 </style>
@@ -303,7 +227,6 @@
   <div class="glow-2"></div>
 </div>
 
-<!-- Header -->
 <header>
   <div class="brand-group">
     <div class="brand-logo">
@@ -311,31 +234,28 @@
     </div>
     <div class="brand-title">
       <h1>NovaSmart AI Command Center</h1>
-      <p>Google Dual Engine (Local ADK + A2A Runtime)</p>
+      <p>Native A2UI Card Engine + Agent Engine Runtime</p>
     </div>
   </div>
 
   <div class="header-actions">
     <div class="fast-badge">
       <div class="pulse-dot"></div>
-      <span>Ultra-Fast Latency (&lt; 0.8s)</span>
+      <span>A2UI Visual Renderer Active</span>
     </div>
   </div>
 </header>
 
 <div class="app-layout">
 
-  <!-- Left Sidebar -->
   <aside class="sidebar">
 
-    <!-- Interactive Leaflet Map -->
     <div class="section-title">
       <span>Live Vector Radar Map</span>
       <span class="material-symbols-outlined" style="font-size:1.1rem;">map</span>
     </div>
     <div id="map"></div>
 
-    <!-- Operations HUD -->
     <div class="section-title">
       <span>Operations HUD</span>
       <span class="material-symbols-outlined" style="font-size:1.1rem;">analytics</span>
@@ -344,7 +264,7 @@
     <div class="stats-grid">
       <div class="stat-card">
         <div class="stat-label">Active Orders</div>
-        <div class="stat-val" style="color:#60a5fa;" id="statOrders">100 Express</div>
+        <div class="stat-val" style="color:#60a5fa;">100 Express</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">Couriers Online</div>
@@ -360,13 +280,11 @@
       </div>
     </div>
 
-    <!-- Dispatch Simulator Button -->
     <button class="dispatch-sim-btn" onclick="runDispatchSimulator()">
       <span class="material-symbols-outlined">rocket_launch</span>
       <span>Simulate Batch Dispatch (5 Orders)</span>
     </button>
 
-    <!-- Instant AI Triggers -->
     <div class="section-title">
       <span>Instant AI Triggers</span>
       <span class="material-symbols-outlined" style="font-size:1.1rem;">bolt</span>
@@ -406,14 +324,13 @@
 
   </aside>
 
-  <!-- Right Canvas Workspace -->
   <main class="canvas">
     <div class="canvas-header">
       <div style="font-family:'Outfit'; font-size:1.05rem; font-weight:700; display:flex; align-items:center; gap:0.5rem;">
         <span class="material-symbols-outlined" style="color:var(--accent-cyan);">forum</span>
-        <span>High-Speed AI Dispatch Canvas</span>
+        <span>A2UI Visual Interactive Dispatch Canvas</span>
       </div>
-      <div style="font-size:0.78rem; color:var(--text-secondary);">Direct Memory Execution Active</div>
+      <div style="font-size:0.78rem; color:var(--text-secondary);">A2UI Protocol Enabled</div>
     </div>
 
     <div id="thread" class="chat-thread"></div>
@@ -430,7 +347,6 @@
 </div>
 
 <script>
-  // Web Audio Haptic Sound Effects
   const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   function playSound(freq=600, duration=0.08) {
     try {
@@ -447,17 +363,11 @@
     } catch(e){}
   }
 
-  // Initialize Leaflet Vector Radar Map
   let map;
   window.addEventListener('load', () => {
     map = L.map('map', { zoomControl: false }).setView([37.7749, -122.4194], 13);
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
-      maxZoom: 19
-    }).addTo(map);
-
-    // Add Dark Store Hub Marker
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(map);
     L.marker([37.7749, -122.4194]).addTo(map).bindPopup('🏪 Downtown Express Hub #1').openPopup();
-    // Add Courier Rider Markers
     L.circleMarker([37.7833, -122.4167], { radius: 6, color: '#10b981', fillColor: '#10b981', fillOpacity: 0.8 }).addTo(map).bindPopup('⚡ CR-101 (Elena Rostova)');
     L.circleMarker([37.7695, -122.4269], { radius: 6, color: '#f59e0b', fillColor: '#f59e0b', fillOpacity: 0.8 }).addTo(map).bindPopup('🛵 CR-102 (Marcus Vance)');
   });
@@ -465,6 +375,52 @@
   const thread = document.getElementById('thread');
   const inputForm = document.getElementById('inputForm');
   const userQuery = document.getElementById('userQuery');
+
+  function renderA2uiCard(data) {
+    try {
+      const surface = data.surfaceUpdate || data.beginRendering || {};
+      const components = surface.components || [];
+      const compMap = {};
+      components.forEach(c => { compMap[c.id] = c.component; });
+
+      // Find root component (usually card_1 or component with Card)
+      let cardContainer = document.createElement('div');
+      cardContainer.className = 'a2ui-card';
+
+      components.forEach(item => {
+        const comp = item.component;
+        if (comp.Text) {
+          const txtObj = comp.Text;
+          const str = txtObj.text ? (txtObj.text.literalString || txtObj.text) : '';
+          const hint = txtObj.usageHint || 'body';
+          
+          if (hint === 'h3' || hint === 'h1' || hint === 'h2') {
+            const h = document.createElement('h3');
+            h.innerHTML = `<span class="material-symbols-outlined" style="color:var(--accent-cyan)">receipt_long</span> ${str}`;
+            cardContainer.appendChild(h);
+          } else {
+            const p = document.createElement('div');
+            p.className = 'a2ui-body-text';
+            
+            if (str.startsWith('Status:')) {
+              p.innerHTML = `<strong style="color:#94a3b8;">Status:</strong> <span style="background:rgba(16, 185, 129, 0.2); color:#34d399; padding:2px 8px; border-radius:12px; font-weight:700;">${str.replace('Status:', '').trim()}</span>`;
+            } else {
+              const parts = str.split(':');
+              if (parts.length > 1) {
+                p.innerHTML = `<strong style="color:#94a3b8;">${parts[0]}:</strong> ${parts.slice(1).join(':')}`;
+              } else {
+                p.innerText = str;
+              }
+            }
+            cardContainer.appendChild(p);
+          }
+        }
+      });
+      return cardContainer.outerHTML;
+    } catch(err) {
+      return `<pre style="font-size:0.78rem; background:rgba(0,0,0,0.4); padding:0.65rem; border-radius:10px;">${JSON.stringify(data, null, 2)}</pre>`;
+    }
+  }
 
   function appendMessage(sender, textOrHtml) {
     const row = document.createElement('div');
@@ -530,7 +486,8 @@
             });
             appendMessage('assistant', content.replace(/\n/g, '<br>'));
           } else if (part.type === 'a2ui' || part.kind === 'a2ui') {
-            appendMessage('assistant', `<strong>📊 Interactive A2UI Card</strong><pre style="font-size:0.78rem; background:rgba(0,0,0,0.4); padding:0.65rem; border-radius:10px; margin-top:0.5rem; overflow-x:auto;">${JSON.stringify(part.data, null, 2)}</pre>`);
+            const htmlCard = renderA2uiCard(part.data);
+            appendMessage('assistant', htmlCard);
           }
         });
       } else {
@@ -543,7 +500,7 @@
   });
 
   window.addEventListener('load', () => {
-    appendMessage('assistant', `<strong>⚡ Welcome to NovaSmart AI Command Center!</strong><br>I am your ultra-fast Google AI fleet dispatcher. Latency is optimized to &lt; 0.8 seconds using local ADK execution. Select a trigger or query me directly!`);
+    appendMessage('assistant', `<strong>⚡ Welcome to NovaSmart AI Command Center!</strong><br>I am your autonomous Google AI fleet dispatcher. Native A2UI Visual Cards are enabled. Click any instant trigger or ask me a query!`);
   });
 </script>
 <style>
