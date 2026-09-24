@@ -3,27 +3,30 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>NovaSmart AI - Autonomous Fleet Ops & Dispatch Engine</title>
+<title>NovaSmart AI - Autonomous Fleet Ops Command Center</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
+<!-- Leaflet.js Vector Map Engine -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
 <style>
   :root {
     --bg-dark: #030712;
-    --surface-glass: rgba(17, 24, 39, 0.7);
-    --surface-hover: rgba(31, 41, 55, 0.8);
+    --surface-glass: rgba(17, 24, 39, 0.75);
+    --surface-hover: rgba(31, 41, 55, 0.85);
     --border-glass: rgba(255, 255, 255, 0.08);
     --border-active: rgba(99, 102, 241, 0.5);
     --text-primary: #f9fafb;
     --text-secondary: #9ca3af;
-    --text-muted: #6b7280;
     --accent-primary: #6366f1;
     --accent-cyan: #06b6d4;
     --accent-purple: #a855f7;
     --gradient-glow: linear-gradient(135deg, #6366f1 0%, #06b6d4 50%, #a855f7 100%);
     --gradient-card: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
-    --shadow-glow: 0 0 35px rgba(99, 102, 241, 0.15);
+    --shadow-glow: 0 0 35px rgba(99, 102, 241, 0.18);
     --radius-lg: 20px;
     --radius-md: 14px;
     --radius-sm: 10px;
@@ -41,7 +44,7 @@
     flex-direction: column;
   }
 
-  /* Glowing Ambient Mesh Background */
+  /* Ambient Mesh Canvas Background */
   .ambient-bg {
     position: fixed;
     top: 0; left: 0; width: 100vw; height: 100vh;
@@ -50,110 +53,69 @@
     pointer-events: none;
   }
 
-  .glow-spot-1 {
-    position: absolute; top: -10%; left: 15%; width: 500px; height: 500px;
-    background: radial-gradient(circle, rgba(99, 102, 241, 0.25) 0%, rgba(0,0,0,0) 70%);
-    filter: blur(60px);
-  }
-
-  .glow-spot-2 {
-    position: absolute; bottom: -10%; right: 10%; width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(6, 182, 212, 0.2) 0%, rgba(0,0,0,0) 70%);
-    filter: blur(80px);
-  }
-
-  .glow-spot-3 {
-    position: absolute; top: 40%; right: 35%; width: 450px; height: 450px;
-    background: radial-gradient(circle, rgba(168, 85, 247, 0.15) 0%, rgba(0,0,0,0) 70%);
+  .glow-1 {
+    position: absolute; top: -10%; left: 15%; width: 550px; height: 550px;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.28) 0%, rgba(0,0,0,0) 70%);
     filter: blur(70px);
   }
 
-  /* Top Navigation Bar */
+  .glow-2 {
+    position: absolute; bottom: -10%; right: 10%; width: 650px; height: 650px;
+    background: radial-gradient(circle, rgba(6, 182, 212, 0.22) 0%, rgba(0,0,0,0) 70%);
+    filter: blur(90px);
+  }
+
+  /* Header */
   header {
     background: var(--surface-glass);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid var(--border-glass);
-    padding: 0.9rem 1.75rem;
+    padding: 0.85rem 1.75rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
     z-index: 20;
   }
 
-  .brand-group {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-  }
+  .brand-group { display: flex; align-items: center; gap: 1rem; }
 
   .brand-logo {
     width: 44px; height: 44px;
     background: var(--gradient-glow);
     border-radius: var(--radius-md);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 25px rgba(99, 102, 241, 0.45);
   }
 
-  .brand-logo span {
-    font-size: 1.6rem;
-    color: #ffffff;
-  }
+  .brand-logo span { font-size: 1.6rem; color: #ffffff; }
 
   .brand-title h1 {
     font-family: 'Outfit', sans-serif;
-    font-size: 1.35rem;
-    font-weight: 800;
+    font-size: 1.35rem; font-weight: 800;
     letter-spacing: -0.02em;
     background: var(--gradient-glow);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
 
-  .brand-title p {
-    font-size: 0.78rem;
-    color: var(--text-secondary);
-    font-weight: 500;
-  }
+  .brand-title p { font-size: 0.78rem; color: var(--text-secondary); font-weight: 500; }
 
-  .header-meta {
-    display: flex;
-    align-items: center;
-    gap: 1.25rem;
-  }
+  .header-actions { display: flex; align-items: center; gap: 1rem; }
 
-  .model-pill {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid var(--border-glass);
-    padding: 0.4rem 0.85rem;
-    border-radius: 30px;
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: #38bdf8;
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-  }
-
-  .status-pill {
-    background: rgba(16, 185, 129, 0.12);
-    border: 1px solid rgba(16, 185, 129, 0.3);
+  .fast-badge {
+    background: rgba(16, 185, 129, 0.15);
+    border: 1px solid rgba(16, 185, 129, 0.35);
     color: #34d399;
     padding: 0.4rem 0.85rem;
     border-radius: 30px;
-    font-size: 0.78rem;
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
+    font-size: 0.78rem; font-weight: 700;
+    display: flex; align-items: center; gap: 0.4rem;
   }
 
-  .status-pulse {
+  .pulse-dot {
     width: 8px; height: 8px;
-    background: #10b981;
-    border-radius: 50%;
-    box-shadow: 0 0 10px #10b981;
+    background: #10b981; border-radius: 50%;
+    box-shadow: 0 0 12px #10b981;
     animation: pulse 2s infinite;
   }
 
@@ -163,17 +125,17 @@
     100% { transform: scale(0.95); opacity: 0.8; }
   }
 
-  /* Main Layout Grid */
+  /* App Main Grid */
   .app-layout {
     flex: 1;
     display: grid;
-    grid-template-columns: 360px 1fr;
+    grid-template-columns: 380px 1fr;
     gap: 1.25rem;
     padding: 1.25rem;
     overflow: hidden;
   }
 
-  /* Left Sidebar - Live Telemetry & Control Panel */
+  /* Left Sidebar */
   .sidebar {
     background: var(--surface-glass);
     backdrop-filter: blur(20px);
@@ -189,145 +151,39 @@
 
   .section-title {
     font-family: 'Outfit', sans-serif;
-    font-size: 0.88rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
+    font-size: 0.88rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.06em;
     color: var(--text-secondary);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    display: flex; align-items: center; justify-content: space-between;
   }
 
-  /* Radar Widget */
-  .radar-widget {
-    background: var(--gradient-card);
-    border: 1px solid var(--border-glass);
+  /* Leaflet Vector Map Canvas */
+  #map {
+    height: 180px;
+    width: 100%;
     border-radius: var(--radius-md);
-    padding: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 1rem;
+    border: 1px solid var(--border-glass);
+    overflow: hidden;
   }
 
-  .radar-ring {
-    position: relative;
-    width: 48px; height: 48px;
-    border: 2px solid rgba(16, 185, 129, 0.4);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    animation: radarSweep 4s linear infinite;
-  }
-
-  .radar-dot {
-    width: 8px; height: 8px;
-    background: #10b981;
-    border-radius: 50%;
-    box-shadow: 0 0 12px #10b981;
-  }
-
-  @keyframes radarSweep {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-
-  .radar-info h4 {
-    font-size: 0.95rem;
-    font-weight: 700;
-  }
-
-  .radar-info p {
-    font-size: 0.78rem;
-    color: var(--text-secondary);
-  }
-
-  /* Stats Cards Grid */
-  .stats-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.75rem;
-  }
+  /* Stats Grid */
+  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
 
   .stat-card {
     background: var(--gradient-card);
     border: 1px solid var(--border-glass);
     border-radius: var(--radius-md);
     padding: 0.85rem;
-    transition: border-color 0.2s ease, transform 0.2s ease;
+    transition: all 0.2s ease;
   }
 
-  .stat-card:hover {
-    border-color: var(--border-active);
-    transform: translateY(-2px);
-  }
+  .stat-card:hover { border-color: var(--border-active); transform: translateY(-2px); }
 
-  .stat-label {
-    font-size: 0.72rem;
-    color: var(--text-secondary);
-    font-weight: 500;
-    margin-bottom: 0.3rem;
-  }
+  .stat-label { font-size: 0.72rem; color: var(--text-secondary); font-weight: 500; margin-bottom: 0.3rem; }
+  .stat-val { font-family: 'Outfit', sans-serif; font-size: 1.15rem; font-weight: 700; }
 
-  .stat-val {
-    font-family: 'Outfit', sans-serif;
-    font-size: 1.15rem;
-    font-weight: 700;
-  }
-
-  /* Active Courier Cards */
-  .courier-list {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .courier-card {
-    background: var(--gradient-card);
-    border: 1px solid var(--border-glass);
-    border-radius: var(--radius-md);
-    padding: 0.85rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .courier-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  .courier-name {
-    font-size: 0.88rem;
-    font-weight: 700;
-  }
-
-  .courier-status {
-    font-size: 0.72rem;
-    font-weight: 700;
-    color: #34d399;
-  }
-
-  .battery-bar {
-    height: 6px;
-    background: rgba(255, 255, 255, 0.08);
-    border-radius: 4px;
-    overflow: hidden;
-  }
-
-  .battery-fill {
-    height: 100%;
-    border-radius: 4px;
-  }
-
-  /* Quick Actions Pills */
-  .action-pills {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
+  /* Quick Action Buttons */
+  .action-pills { display: flex; flex-direction: column; gap: 0.5rem; }
 
   .pill-btn {
     background: rgba(255, 255, 255, 0.03);
@@ -335,72 +191,55 @@
     color: var(--text-primary);
     padding: 0.65rem 0.9rem;
     border-radius: var(--radius-sm);
-    font-size: 0.82rem;
-    font-weight: 600;
-    text-align: left;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+    font-size: 0.82rem; font-weight: 600;
+    text-align: left; cursor: pointer;
+    display: flex; align-items: center; justify-content: space-between;
     transition: all 0.2s ease;
   }
 
   .pill-btn:hover {
     background: var(--surface-hover);
     border-color: var(--accent-primary);
-    box-shadow: 0 0 15px rgba(99, 102, 241, 0.2);
+    box-shadow: 0 0 15px rgba(99, 102, 241, 0.25);
     transform: translateX(3px);
   }
 
-  /* Right Canvas Panel - Dynamic Chat & Interactive Visuals */
+  /* Dispatch Simulator Button */
+  .dispatch-sim-btn {
+    background: var(--gradient-glow);
+    color: white; border: none;
+    padding: 0.75rem 1rem;
+    border-radius: var(--radius-md);
+    font-weight: 700; font-size: 0.85rem;
+    cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+    box-shadow: 0 0 20px rgba(99, 102, 241, 0.35);
+    transition: transform 0.2s ease;
+  }
+  .dispatch-sim-btn:hover { transform: scale(1.02); }
+
+  /* Right Canvas */
   .canvas {
     background: var(--surface-glass);
     backdrop-filter: blur(20px);
     border: 1px solid var(--border-glass);
     border-radius: var(--radius-lg);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    box-shadow: var(--shadow-glow);
+    display: flex; flex-direction: column;
+    overflow: hidden; box-shadow: var(--shadow-glow);
   }
 
   .canvas-header {
     padding: 1rem 1.5rem;
     border-bottom: 1px solid var(--border-glass);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-  }
-
-  .canvas-title {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    font-family: 'Outfit', sans-serif;
-    font-size: 1.05rem;
-    font-weight: 700;
+    display: flex; align-items: center; justify-content: space-between;
   }
 
   .chat-thread {
-    flex: 1;
-    padding: 1.5rem;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
+    flex: 1; padding: 1.5rem;
+    overflow-y: auto; display: flex; flex-direction: column; gap: 1.25rem;
   }
 
-  .msg-row {
-    display: flex;
-    flex-direction: column;
-    max-width: 84%;
-    animation: msgFade 0.25s ease-out;
-  }
-
-  @keyframes msgFade {
-    from { opacity: 0; transform: translateY(8px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+  .msg-row { display: flex; flex-direction: column; max-width: 84%; animation: msgFade 0.25s ease-out; }
+  @keyframes msgFade { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
   .msg-row.user { align-self: flex-end; }
   .msg-row.assistant { align-self: flex-start; }
@@ -408,32 +247,26 @@
   .msg-bubble {
     padding: 1rem 1.25rem;
     border-radius: var(--radius-md);
-    font-size: 0.92rem;
-    line-height: 1.6;
+    font-size: 0.92rem; line-height: 1.6;
   }
 
   .user .msg-bubble {
     background: var(--gradient-glow);
-    color: #ffffff;
-    border-bottom-right-radius: 4px;
-    font-weight: 500;
-    box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+    color: #ffffff; border-bottom-right-radius: 4px; font-weight: 500;
   }
 
   .assistant .msg-bubble {
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid var(--border-glass);
-    color: var(--text-primary);
-    border-bottom-left-radius: 4px;
+    color: var(--text-primary); border-bottom-left-radius: 4px;
   }
 
-  /* Input Pill Form */
+  /* Input Form */
   .input-bar {
     padding: 1rem 1.5rem;
     border-top: 1px solid var(--border-glass);
     background: rgba(17, 24, 39, 0.4);
-    display: flex;
-    gap: 0.85rem;
+    display: flex; gap: 0.85rem;
   }
 
   .chat-input {
@@ -443,8 +276,7 @@
     color: var(--text-primary);
     padding: 0.85rem 1.25rem;
     border-radius: var(--radius-md);
-    font-size: 0.92rem;
-    outline: none;
+    font-size: 0.92rem; outline: none;
     transition: all 0.2s ease;
   }
 
@@ -455,75 +287,55 @@
 
   .submit-btn {
     background: var(--gradient-glow);
-    color: #ffffff;
-    border: none;
+    color: #ffffff; border: none;
     padding: 0.85rem 1.5rem;
     border-radius: var(--radius-md);
-    font-weight: 700;
-    font-size: 0.9rem;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
+    font-weight: 700; font-size: 0.9rem;
+    cursor: pointer; display: flex; align-items: center; gap: 0.5rem;
     box-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
-    transition: transform 0.2s ease;
   }
-
-  .submit-btn:hover { transform: scale(1.03); }
 </style>
 </head>
 <body>
 
-<!-- Ambient Mesh Glow Background -->
 <div class="ambient-bg">
-  <div class="glow-spot-1"></div>
-  <div class="glow-spot-2"></div>
-  <div class="glow-spot-3"></div>
+  <div class="glow-1"></div>
+  <div class="glow-2"></div>
 </div>
 
-<!-- Navigation Header -->
+<!-- Header -->
 <header>
   <div class="brand-group">
     <div class="brand-logo">
       <span class="material-symbols-outlined">bolt</span>
     </div>
     <div class="brand-title">
-      <h1>NovaSmart AI Ops</h1>
-      <p>Google Autonomous Dark-Store Dispatch Engine</p>
+      <h1>NovaSmart AI Command Center</h1>
+      <p>Google Dual Engine (Local ADK + A2A Runtime)</p>
     </div>
   </div>
 
-  <div class="header-meta">
-    <div class="model-pill">
-      <span class="material-symbols-outlined" style="font-size:1.1rem;">auto_awesome</span>
-      <span>Gemini 2.5 Flash + Omni Model</span>
-    </div>
-
-    <div class="status-pill">
-      <div class="status-pulse"></div>
-      <span>Agent Engine Active (14ms)</span>
+  <div class="header-actions">
+    <div class="fast-badge">
+      <div class="pulse-dot"></div>
+      <span>Ultra-Fast Latency (&lt; 0.8s)</span>
     </div>
   </div>
 </header>
 
-<!-- Main Split App Layout -->
 <div class="app-layout">
 
-  <!-- Left Sidebar (Live Radar, Telemetry, Quick Prompts) -->
+  <!-- Left Sidebar -->
   <aside class="sidebar">
 
-    <!-- Live Radar Widget -->
-    <div class="radar-widget">
-      <div class="radar-ring">
-        <div class="radar-dot"></div>
-      </div>
-      <div class="radar-info">
-        <h4>San Francisco Hub #1</h4>
-        <p>National Weather Radar Active</p>
-      </div>
+    <!-- Interactive Leaflet Map -->
+    <div class="section-title">
+      <span>Live Vector Radar Map</span>
+      <span class="material-symbols-outlined" style="font-size:1.1rem;">map</span>
     </div>
+    <div id="map"></div>
 
-    <!-- Live Fleet Stats Grid -->
+    <!-- Operations HUD -->
     <div class="section-title">
       <span>Operations HUD</span>
       <span class="material-symbols-outlined" style="font-size:1.1rem;">analytics</span>
@@ -532,7 +344,7 @@
     <div class="stats-grid">
       <div class="stat-card">
         <div class="stat-label">Active Orders</div>
-        <div class="stat-val" style="color:#60a5fa;">100+ Express</div>
+        <div class="stat-val" style="color:#60a5fa;" id="statOrders">100 Express</div>
       </div>
       <div class="stat-card">
         <div class="stat-label">Couriers Online</div>
@@ -548,37 +360,13 @@
       </div>
     </div>
 
-    <!-- Active Rider Telemetry -->
-    <div class="section-title">
-      <span>Rider Telemetry</span>
-      <span class="material-symbols-outlined" style="font-size:1.1rem;">electric_moped</span>
-    </div>
+    <!-- Dispatch Simulator Button -->
+    <button class="dispatch-sim-btn" onclick="runDispatchSimulator()">
+      <span class="material-symbols-outlined">rocket_launch</span>
+      <span>Simulate Batch Dispatch (5 Orders)</span>
+    </button>
 
-    <div class="courier-list">
-      <div class="courier-card">
-        <div class="courier-header">
-          <span class="courier-name">Elena Rostova (CR-101)</span>
-          <span class="courier-status">In Transit</span>
-        </div>
-        <div style="font-size:0.75rem; color:var(--text-secondary);">E-Bike • 22.4 km/h • Safety 98/100</div>
-        <div class="battery-bar">
-          <div class="battery-fill" style="width:88%; background:#10b981;"></div>
-        </div>
-      </div>
-
-      <div class="courier-card">
-        <div class="courier-header">
-          <span class="courier-name">Marcus Vance (CR-102)</span>
-          <span class="courier-status" style="color:#fbbf24;">Low Battery</span>
-        </div>
-        <div style="font-size:0.75rem; color:var(--text-secondary);">Cargo Scooter • 18 km/h</div>
-        <div class="battery-bar">
-          <div class="battery-fill" style="width:42%; background:#f59e0b;"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Quick Action Prompts -->
+    <!-- Instant AI Triggers -->
     <div class="section-title">
       <span>Instant AI Triggers</span>
       <span class="material-symbols-outlined" style="font-size:1.1rem;">bolt</span>
@@ -621,12 +409,11 @@
   <!-- Right Canvas Workspace -->
   <main class="canvas">
     <div class="canvas-header">
-      <div class="canvas-title">
+      <div style="font-family:'Outfit'; font-size:1.05rem; font-weight:700; display:flex; align-items:center; gap:0.5rem;">
         <span class="material-symbols-outlined" style="color:var(--accent-cyan);">forum</span>
-        <span>Autonomous Dispatch Canvas</span>
+        <span>High-Speed AI Dispatch Canvas</span>
       </div>
-
-      <div style="font-size:0.78rem; color:var(--text-secondary);">Synchronized with Google Cloud Firestore & Vertex AI</div>
+      <div style="font-size:0.78rem; color:var(--text-secondary);">Direct Memory Execution Active</div>
     </div>
 
     <div id="thread" class="chat-thread"></div>
@@ -643,6 +430,38 @@
 </div>
 
 <script>
+  // Web Audio Haptic Sound Effects
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  function playSound(freq=600, duration=0.08) {
+    try {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.frequency.value = freq;
+      osc.type = 'sine';
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+      osc.start();
+      osc.stop(audioCtx.currentTime + duration);
+    } catch(e){}
+  }
+
+  // Initialize Leaflet Vector Radar Map
+  let map;
+  window.addEventListener('load', () => {
+    map = L.map('map', { zoomControl: false }).setView([37.7749, -122.4194], 13);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+      maxZoom: 19
+    }).addTo(map);
+
+    // Add Dark Store Hub Marker
+    L.marker([37.7749, -122.4194]).addTo(map).bindPopup('🏪 Downtown Express Hub #1').openPopup();
+    // Add Courier Rider Markers
+    L.circleMarker([37.7833, -122.4167], { radius: 6, color: '#10b981', fillColor: '#10b981', fillOpacity: 0.8 }).addTo(map).bindPopup('⚡ CR-101 (Elena Rostova)');
+    L.circleMarker([37.7695, -122.4269], { radius: 6, color: '#f59e0b', fillColor: '#f59e0b', fillOpacity: 0.8 }).addTo(map).bindPopup('🛵 CR-102 (Marcus Vance)');
+  });
+
   const thread = document.getElementById('thread');
   const inputForm = document.getElementById('inputForm');
   const userQuery = document.getElementById('userQuery');
@@ -663,17 +482,23 @@
     inputForm.dispatchEvent(new Event('submit'));
   }
 
+  function runDispatchSimulator() {
+    playSound(880, 0.15);
+    sendPrompt('🚀 Optimize batch dispatch assignments for pending orders at Downtown Express Hub #1');
+  }
+
   inputForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     const query = userQuery.value.trim();
     if (!query) return;
 
+    playSound(700, 0.06);
     appendMessage('user', query);
     userQuery.value = '';
 
     const loadingRow = document.createElement('div');
     loadingRow.className = 'msg-row assistant';
-    loadingRow.innerHTML = `<div class="msg-bubble" style="color:var(--text-secondary); display:flex; align-items:center; gap:0.5rem;"><span class="material-symbols-outlined" style="animation:spin 1s linear infinite;">sync</span> NovaSmart AI processing request...</div>`;
+    loadingRow.innerHTML = `<div class="msg-bubble" style="color:var(--text-secondary); display:flex; align-items:center; gap:0.5rem;"><span class="material-symbols-outlined" style="animation:spin 0.8s linear infinite;">sync</span> NovaSmart AI processing request...</div>`;
     thread.appendChild(loadingRow);
     thread.scrollTop = thread.scrollHeight;
 
@@ -685,6 +510,7 @@
       });
 
       loadingRow.remove();
+      playSound(1200, 0.1);
 
       if (!res.ok) {
         appendMessage('assistant', `⚠️ Request failed with status ${res.status}`);
@@ -694,23 +520,21 @@
       const data = await res.json();
       if (data.parts && data.parts.length > 0) {
         data.parts.forEach(part => {
-          if (part.type === 'text') {
-            let content = part.content || '';
-            // Convert video URLs to embedded HTML5 video players
+          if (part.type === 'text' || part.kind === 'text') {
+            let content = part.text || part.content || '';
             content = content.replace(/(https:\/\/storage\.googleapis\.com\/[^\s"']+\.mp4)/g, (match) => {
-              return `<div style="margin-top:0.85rem;"><video controls style="width:100%; max-width:540px; border-radius:14px; border:1px solid var(--border-glass); box-shadow:0 10px 30px rgba(0,0,0,0.5);"><source src="${match}" type="video/mp4"></video><br><a href="${match}" target="_blank" style="color:var(--accent-cyan); font-size:0.8rem; text-decoration:underline;">📥 Download 3D Promo Video</a></div>`;
+              return `<div style="margin-top:0.85rem;"><video controls style="width:100%; max-width:540px; border-radius:14px; border:1px solid var(--border-glass);"><source src="${match}" type="video/mp4"></video><br><a href="${match}" target="_blank" style="color:var(--accent-cyan); font-size:0.8rem; text-decoration:underline;">📥 Download 3D Promo Video</a></div>`;
             });
-            // Convert image URLs to embedded images
             content = content.replace(/(https:\/\/storage\.googleapis\.com\/[^\s"']+\.(png|jpg|jpeg|webp))/g, (match) => {
-              return `<div style="margin-top:0.85rem;"><img src="${match}" style="width:100%; max-width:480px; border-radius:14px; border:1px solid var(--border-glass); shadow:0 10px 30px rgba(0,0,0,0.5);"><br><a href="${match}" target="_blank" style="color:var(--accent-cyan); font-size:0.8rem; text-decoration:underline;">📸 Open Preview Image</a></div>`;
+              return `<div style="margin-top:0.85rem;"><img src="${match}" style="width:100%; max-width:480px; border-radius:14px; border:1px solid var(--border-glass);"><br><a href="${match}" target="_blank" style="color:var(--accent-cyan); font-size:0.8rem; text-decoration:underline;">📸 Open Preview Image</a></div>`;
             });
             appendMessage('assistant', content.replace(/\n/g, '<br>'));
-          } else if (part.type === 'a2ui') {
+          } else if (part.type === 'a2ui' || part.kind === 'a2ui') {
             appendMessage('assistant', `<strong>📊 Interactive A2UI Card</strong><pre style="font-size:0.78rem; background:rgba(0,0,0,0.4); padding:0.65rem; border-radius:10px; margin-top:0.5rem; overflow-x:auto;">${JSON.stringify(part.data, null, 2)}</pre>`);
           }
         });
       } else {
-        appendMessage('assistant', 'NovaSmart AI completed the request.');
+        appendMessage('assistant', '⚡ NovaSmart AI completed the request.');
       }
     } catch (err) {
       loadingRow.remove();
@@ -719,7 +543,7 @@
   });
 
   window.addEventListener('load', () => {
-    appendMessage('assistant', `<strong>⚡ Welcome to NovaSmart AI Ops!</strong><br>I am your autonomous Google AI fleet dispatcher. Select an instant trigger from the left panel or ask me to check express orders, rider telemetry, route maps, or generate 3D promo videos.`);
+    appendMessage('assistant', `<strong>⚡ Welcome to NovaSmart AI Command Center!</strong><br>I am your ultra-fast Google AI fleet dispatcher. Latency is optimized to &lt; 0.8 seconds using local ADK execution. Select a trigger or query me directly!`);
   });
 </script>
 <style>
